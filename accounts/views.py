@@ -5,7 +5,11 @@ from django.contrib import messages
 
 from .forms import *
 from .models import *
+
 from friend.models import FriendList, FriendRequest
+from friend.utils import get_friend_request_or_false
+from friend.friend_request_status import FriendRequestStatus
+
 from django.db.models import Sum
 
 
@@ -79,15 +83,50 @@ def home(request):
 
 @login_required(login_url='login')
 def userPage(request, pk):
+    context = {}
+    customer = Customer.objects.get(id=pk)
+    context['customer'] = customer
+    account = customer.user
+    try:
+        friend_list = FriendList.objects.get(user=account)
+    except FriendList.DoesNotExist:
+        friend_list = FriendList(user=account)
+        friend_list.save()
+    friends = friend_list.friends.all()
+    context['friends'] = friends
 
     is_self = True
+    is_friend = False
     user = request.user
-    customer = Customer.objects.get(id=pk)
-
-    if user.is_authenticated and user != customer.user:
+    friend_requests = None
+    request_sent = FriendRequestStatus.NO_REQUEST_SENT.value # range: ENUM -> friend/friend_request_status.FriendRequestStatus
+    if user.is_authenticated and user != account:
         is_self = False
-        
-    context = {'customer':customer, 'is_self': is_self}
+        if friends.filter(pk=user.id):
+            is_friend = True
+        else:
+            # CASE1: Request has been sent from THEM to YOU: FriendRequestStatus.THEM_SENT_TO_YOU
+            if get_friend_request_or_false(sender=account, receiver=user) != False:
+                request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
+                context['pending_friend_request_id'] = get_friend_request_or_false(sender=account, receiver=user).id
+
+            # CASE2: Request has been sent from YOU to THEM: FriendRequestStatus.YOU_SENT_TO_THEM
+            elif get_friend_request_or_false(sender=user, receiver=account) != False:
+                request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+
+            # CASE3: No request has been sent. FriendRequestStatus.NO_REQUEST_SENT
+            else:
+                request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+    else:
+        try:
+            friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+        except:
+            pass
+
+    context['is_self'] = is_self
+    context['is_friend'] = is_friend
+    context['request_sent'] = request_sent
+    context['friend_requests'] = friend_requests
     return render(request, 'accounts/user.html', context)
 
 @login_required(login_url='login')

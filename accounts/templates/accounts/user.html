@@ -25,23 +25,43 @@
             </div>
 
             {%  if not is_self %}
-            <div>
-                <a href="#" class="btn solid" id="add_friend_pc">Add Friend</a>
-                <a href="#" class="btn solid" id="add_friend_mobile">+</a>
-            </div>
-            {%  endif %}
+                {% if is_friend %}
+                {% else %}
+                    {% if request_sent == -1 %}
+                        <div>
+                            <a href="#" class="btn solid" id="add_friend_pc">Add Friend</a>
+                            <a href="#" class="btn solid" id="add_friend_mobile">+</a>
+                        </div>
+                    {% endif %}
+
+                    {% if request_sent == 1 %}
+                    <div>
+                        <a href="#" class="btn solid" id="add_friend_pc">Cancel Request</a>
+                        <a href="#" class="btn solid" id="add_friend_mobile">Cancel</a>
+                    </div>
+                    {% endif %}
+
+                    {% if request_sent == 0 %}
+                    <div>
+                        <a href="#" class="btn solid" id="add_friend_pc">Accept Request</a>
+                        <a href="#" class="btn solid" id="add_friend_mobile">Accept</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
         </div>
         <div class="lower-container">
             <div id="profile_description">
                 <p>{{customer.description}}</p>
             </div>
             <div id="profile_events">
-                <h2>:D</h2>
+                <h2>{{friends|length}}</h2>
                 <p>Tracked Activities</p>
             </div>
         </div>
     </div>
 </div>
+
 
 
 {% endblock %} 
