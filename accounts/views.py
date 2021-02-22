@@ -22,7 +22,8 @@ def registerPage(request):
 
                 Customer.objects.create(
                     user=user,
-                    name=user.username
+                    username=user.username,
+                    email=user.email
                 )
 
                 messages.success(request, 'Account for ' + username + ' was successfully created.')
