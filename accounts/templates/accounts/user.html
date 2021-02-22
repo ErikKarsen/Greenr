@@ -8,30 +8,35 @@
     <div class="profile-container container">
         <div class="upper-container">
             <div class="image-container">
-                        <img src="{{request.user.customer.profile_pic.url}}" />
+                        <img src="{{customer.profile_pic.url}}" />
             </div>
-            <h3>{{request.user.customer.first_name}} {{request.user.customer.last_name}}</h3>
+            <h3>{{customer.first_name}} {{customer.last_name}}</h3>
 
+            {%  if is_self %}
             <div class="edit-vector">
                 <a href="{% url 'update_customer' %}" class="edit-link"><img src="{% static 'images/edit-icon.png' %}" alt="edit"></a>
             </div>
+            {% endif %}
         </div>
         <div class="middle-container">
             <div>
-                <h4>{{request.user.customer.title}}</h4>
+                <h4>{{customer.title}}</h4>
                 <p>Greater London Area</p>
             </div>
+
+            {%  if not is_self %}
             <div>
                 <a href="#" class="btn solid" id="add_friend_pc">Add Friend</a>
                 <a href="#" class="btn solid" id="add_friend_mobile">+</a>
             </div>
+            {%  endif %}
         </div>
         <div class="lower-container">
             <div id="profile_description">
-                <p>{{request.user.customer.description}}</p>
+                <p>{{customer.description}}</p>
             </div>
             <div id="profile_events">
-                <h2>0</h2>
+                <h2>:D</h2>
                 <p>Tracked Activities</p>
             </div>
         </div>

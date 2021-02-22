@@ -5,7 +5,9 @@ from django.contrib import messages
 
 from .forms import *
 from .models import *
+from friend.models import FriendList, FriendRequest
 from django.db.models import Sum
+
 
 # Create your views here.
 def registerPage(request):
@@ -76,9 +78,16 @@ def home(request):
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url='login')
-def userPage(request):
+def userPage(request, pk):
 
-    context = {}
+    is_self = True
+    user = request.user
+    customer = Customer.objects.get(id=pk)
+
+    if user.is_authenticated and user != customer.user:
+        is_self = False
+        
+    context = {'customer':customer, 'is_self': is_self}
     return render(request, 'accounts/user.html', context)
 
 @login_required(login_url='login')
