@@ -6,13 +6,17 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True)
-    phone = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200, null=True)
+    username = models.CharField(max_length=32, null=True)
+    first_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50, null=True)
+    email = models.CharField(max_length=62, null=True)
+    profile_pic = models.ImageField(default="default-user-image.png", null=True, blank=True)
+    title = models.CharField(default="Sustainability Enthusiast", max_length=62, null=True)
+    description = models.CharField(default="I love sustainability!", max_length=200, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.username
 
 class Transportation(models.Model):
     CATEGORY = (
