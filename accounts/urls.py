@@ -4,10 +4,13 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='home'),
     path('register/', views.registerPage, name='register'),
     path('login/', views.loginPage, name='login'),
     path('logout/', views.logoutUser, name='logout'),
+
+    path('', views.home, name='home'),
+    path('user/', views.userPage, name='user_page'),
+    path('edit_profile/', views.updateCustomer, name='update_customer'),
 
     path('create_journey', views.createJourney, name='create_journey'),
     path('update_journey/<str:pk>/', views.updateJourney, name='update_journey'),

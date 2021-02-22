@@ -1,0 +1,42 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+
+<div class="user-main main">
+    <div class="profile-container container">
+        <div class="upper-container">
+            <div class="image-container">
+                        <img src="{{request.user.customer.profile_pic.url}}" />
+            </div>
+            <h3>{{request.user.customer.first_name}} {{request.user.customer.last_name}}</h3>
+
+            <div class="edit-vector">
+                <a href="{% url 'update_customer' %}" class="edit-link"><img src="{% static 'images/edit-icon.png' %}" alt="edit"></a>
+            </div>
+        </div>
+        <div class="middle-container">
+            <div>
+                <h4>{{request.user.customer.title}}</h4>
+                <p>Greater London Area</p>
+            </div>
+            <div>
+                <a href="#" class="btn solid" id="add_friend_pc">Add Friend</a>
+                <a href="#" class="btn solid" id="add_friend_mobile">+</a>
+            </div>
+        </div>
+        <div class="lower-container">
+            <div id="profile_description">
+                <p>{{request.user.customer.description}}</p>
+            </div>
+            <div id="profile_events">
+                <h2>0</h2>
+                <p>Tracked Activities</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %} 
