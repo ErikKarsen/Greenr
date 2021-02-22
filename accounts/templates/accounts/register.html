@@ -1,0 +1,64 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main">
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Sign up</h2>
+                    <form method="POST" class="register-form" id="register-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name"></label>
+                            {{form.username}}
+                        </div>
+                        <div class="form-group">
+                            <label for="email"></label>
+                            {{form.email}}
+                        </div>
+                        <div class="form-group">
+                            <label for="password1"></label>
+                            {{form.password1}}
+                        </div>
+                        <div class="form-group">
+                            <label for="password2"></label>
+                            {{form.password2}}
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                        </div>
+                    </form>
+                </div>
+                {{form.errors}}
+
+                <div class="signup-image">
+                    <figure><img src="{% static 'images/signup-image.jpg' %}" alt="sing up image"></figure>
+                    <a href="{% url 'login' %}" class="signup-image-link">I am already member</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+
+/* Since placeholder values have not been set in forms.py they will be set here using vanilla Javascript*/
+
+//Query All input fields
+var form_fields = document.getElementsByTagName('input')
+form_fields[2].placeholder='Username..';
+form_fields[3].placeholder='Email..';
+form_fields[4].placeholder='Enter password...';
+form_fields[5].placeholder='Re-enter Password...';
+
+
+for (var field in form_fields){	
+form_fields[field].className += ' form-control'
+}
+</script>
+
+{% endblock %}

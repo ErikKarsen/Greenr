@@ -1,0 +1,42 @@
+<header>
+    <div class="nav-container">
+        <input type="checkbox" name="" id="check">
+        
+        <div class="logo-container">
+            <a href="{% url 'login' %}"> <h3 class="logo">GREE<span>NR</span></h3> </a>
+        </div>
+
+        <div class="nav-btn">            
+            {% if user.is_authenticated %}
+
+            <div class="nav-links">
+                <ul>
+                    <li class="nav-link" style="--i: .6s">
+                        <a href="{% url 'create_journey' %}">Track</a>
+                    </li>
+                    <li class="nav-link" style="--i: .85s">
+                        <a href="#">Offset</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="log-sign" style="--i: 1.1s">
+                <a href="{% url 'logout' %}" class="btn solid">Logout</a>
+            </div>
+            {% else %}
+            <div class="log-sign" style="--i: 1.1s">
+                <a href="{% url 'login' %}" class="btn transparent">Log in</a>
+                <a href="{% url 'register' %}" class="btn solid">Sign up</a>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="hamburger-menu-container">
+            <div class="hamburger-menu">
+                <div></div>
+            </div>
+        </div>
+
+        
+    </div>
+</header>

@@ -1,0 +1,23 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main">
+    <div class="container">
+        <section class="delete-content">
+            <p>Are you sure you want to delete your <b>{{item.transportation}}</b> journey from <b>{{item.date_created}}</b>?</p>
+
+            <form action="{% url 'delete_journey' item.id %}" class="delete-form" method="POST">
+                {% csrf_token %}
+
+                <a class="primary-button cancel-button" href="{% url 'home' %}">Cancel</a>
+
+                <input class="primary-button delete-button" type="submit" name="Confirm" value="Delete">
+
+            </form>
+        </section>
+    </div>
+</div>
+
+
+{% endblock %}

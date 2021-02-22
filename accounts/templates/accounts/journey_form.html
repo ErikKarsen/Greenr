@@ -1,0 +1,39 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main">
+
+    <section class="create-journey">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Track Journey</h2>
+                    <form method="POST" class="journey-form" id="journey-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <p>Transportation Method:</p>
+                            {{form.transportation}}
+                        </div>
+                        <h3>Duration</h3>
+                        <div class="form-group">
+                            <p>Hours:</p>
+                            {{form.duration_hours}}
+                        </div>
+                        <div class="form-group">
+                            <p>Minutes:</p>
+                            {{form.duration_minutes}}
+                        </div>
+                        <div class="form-group form-button">
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Submit"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}

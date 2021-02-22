@@ -1,0 +1,51 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+
+{% include 'accounts/data_tiles.html' %}
+<div class="split-container">
+
+<div class="table-container">
+    <h2 class="table-title">Recent Journeys</h2>
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Transportation Method</th>
+                <th>Duration</th>
+                <th>Carbon Cost (CO2)</th>
+                <th>Status</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in journeys %}
+            <tr>
+                <td>{{i.date_created}}</td>
+                <td>{{i.transportation}}</td>
+                <td>{{i.duration_hours}}hr {{i.duration_minutes}}min</td>
+                <td>{{60|mul:i.duration_hours|add:i.duration_minutes|mul:i.transportation.carbon_price|floatformat}}kg</td>
+                <td>{{i.status}}</td>
+                <td><a class="primary-button update-button" href="{% url 'update_journey' i.id %}">Update</a></td>
+                <td><a class="primary-button delete-button" href="{% url 'delete_journey' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+  </table>
+</div>
+
+<br>
+
+<div class="table-container">
+    <h2 class="table-title">Recent Meals</h2>
+    <table class="content-table">
+  </table>
+</div>
+
+</div>
+{% endblock %}
