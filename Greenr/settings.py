@@ -24,7 +24,7 @@ from .secret_settings import *
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['projectgreenr.herokuapp.com', '127.0.0.1']
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'mathfilters',
 
     'accounts',
+    'friend',
 
     'storages',
 ]

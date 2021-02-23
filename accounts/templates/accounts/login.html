@@ -14,7 +14,7 @@
             <div class="signin-content">
                 <div class="signin-image">
                     <figure><img src="{% static 'images/signin-image.jpg' %}" alt="sing up image"></figure>
-                    <a href="{% url 'register' %}" class="signup-image-link">Create an account</a>
+                    <a href="{% url 'accounts:register' %}" class="signup-image-link">Create an account</a>
                 </div>
                 
                 <div class="signin-form">
@@ -32,7 +32,7 @@
                         <div class="form-group form-button">
                             <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
                         </div>
-                        <a href="{% url 'reset_password' %}" class="signup-image-link" style="text-align: left;">Forgot Password?</a>
+                        <a href="{% url 'accounts:reset_password' %}" class="signup-image-link" style="text-align: left;">Forgot Password?</a>
 
                     </form>
 

@@ -5,12 +5,18 @@ from django.contrib import messages
 
 from .forms import *
 from .models import *
+
+from friend.models import FriendList, FriendRequest
+from friend.utils import get_friend_request_or_false
+from friend.friend_request_status import FriendRequestStatus
+
 from django.db.models import Sum
+
 
 # Create your views here.
 def registerPage(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('accounts:home')
     else:
         form = CreateUserForm()
         
@@ -27,7 +33,7 @@ def registerPage(request):
                 )
 
                 messages.success(request, 'Account for ' + username + ' was successfully created.')
-                return redirect('login')
+                return redirect('accounts:login')
                 
 
 
@@ -36,7 +42,7 @@ def registerPage(request):
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('accounts:home')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -48,9 +54,9 @@ def loginPage(request):
                 login(request, user)
 
                 if request.user.customer.first_name:
-                    return redirect('home')
+                    return redirect('accounts:home')
                 else:
-                    return redirect('update_customer')
+                    return redirect('accounts:update_customer')
             else:
                 messages.info(request, 'Invalid Username or Password')
                 
@@ -59,7 +65,7 @@ def loginPage(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect('accounts:login')
 
 @login_required(login_url='login')
 def home(request):
@@ -76,9 +82,52 @@ def home(request):
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url='login')
-def userPage(request):
-
+def userPage(request, pk):
     context = {}
+    customer = Customer.objects.get(id=pk)
+    context['customer'] = customer
+    account = customer.user
+    try:
+        friend_list = FriendList.objects.get(user=account)
+    except FriendList.DoesNotExist:
+        friend_list = FriendList(user=account)
+        friend_list.save()
+    friends = friend_list.friends.all()
+    context['friends'] = friends
+
+    is_self = True
+    is_friend = False
+    user = request.user
+    friend_requests = None
+    request_sent = FriendRequestStatus.NO_REQUEST_SENT.value # range: ENUM -> friend/friend_request_status.FriendRequestStatus
+    if user.is_authenticated and user != account:
+        is_self = False
+        if friends.filter(pk=user.id):
+            is_friend = True
+        else:
+            # CASE1: Request has been sent from THEM to YOU: FriendRequestStatus.THEM_SENT_TO_YOU
+            if get_friend_request_or_false(sender=account, receiver=user) != False:
+                request_sent = FriendRequestStatus.THEM_SENT_TO_YOU.value
+                context['pending_friend_request_id'] = get_friend_request_or_false(sender=account, receiver=user).id
+
+            # CASE2: Request has been sent from YOU to THEM: FriendRequestStatus.YOU_SENT_TO_THEM
+            elif get_friend_request_or_false(sender=user, receiver=account) != False:
+                request_sent = FriendRequestStatus.YOU_SENT_TO_THEM.value
+
+            # CASE3: No request has been sent. FriendRequestStatus.NO_REQUEST_SENT
+            else:
+                request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+
+    else:
+        try:
+            friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+        except:
+            pass
+
+    context['is_self'] = is_self
+    context['is_friend'] = is_friend
+    context['request_sent'] = request_sent
+    context['friend_requests'] = friend_requests
     return render(request, 'accounts/user.html', context)
 
 @login_required(login_url='login')
@@ -90,7 +139,7 @@ def updateCustomer(request):
         form = CustomerForm(request.POST, request.FILES, instance=customer)
         if form.is_valid():
             form.save()
-            return redirect('user_page')
+            return redirect('accounts:user_page')
         print(form.errors)
 
     context = {'form': form}
@@ -105,7 +154,7 @@ def createJourney(request):
             stock = form.save(commit=False)
             stock.customer = Customer.objects.get(user=request.user.id)
             stock.save()
-            return redirect('home')
+            return redirect('accounts:home')
 
     context = {'form': form}
     return render(request, 'accounts/journey_form.html', context)
@@ -119,7 +168,7 @@ def updateJourney(request, pk):
         form = JourneyForm(request.POST, instance=journey)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('accounts:home')
 
     context = {'form': form}
     return render(request, 'accounts/journey_form.html', context)
@@ -130,7 +179,7 @@ def deleteJourney(request, pk):
 
     if request.method == 'POST':
         journey.delete()
-        return redirect('home')
+        return redirect('accounts:home')
         
     context = {'item': journey}
     return render(request, 'accounts/delete.html', context)
