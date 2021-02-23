@@ -117,6 +117,7 @@ def userPage(request, pk):
             # CASE3: No request has been sent. FriendRequestStatus.NO_REQUEST_SENT
             else:
                 request_sent = FriendRequestStatus.NO_REQUEST_SENT.value
+
     else:
         try:
             friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)

@@ -708,19 +708,19 @@ label.valid:after {
     transform: translate(0px,-50px);
 }
 
-#add_friend_mobile{
+#btn_mobile{
     display: none;
 }
-#add_friend_pc{
+#btn_pc{
     display: inline-block;
 }
 
 @media (max-width: 600px){
-    #add_friend_mobile{
+    #btn_mobile{
         display: inline-block;
     }
 
-    #add_friend_pc{
+    #btn_pc{
         display: none;
     }
 }
