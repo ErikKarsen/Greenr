@@ -25,20 +25,12 @@ def send_friend_request(request, pk):
 							raise Exception("You already sent them a friend request.")
 					# If none are active create a new friend request
 					FriendRequest.objects.create(sender=user, receiver=receiver)
-
-
-
-					# friend_request = FriendRequest(sender=user, receiver=receiver)
-					# friend_request.save()
 					payload['response'] = "Friend request sent."
 				except Exception as e:
 					payload['response'] = str(e)
 			except FriendRequest.DoesNotExist:
 				# There are no friend requests so create one.
 				FriendRequest.objects.create(sender=user, receiver=receiver)
-
-				# friend_request = FriendRequest(sender=user, receiver=receiver)
-				# friend_request.save()
 				payload['response'] = "Friend request sent."
 
 			if payload['response'] == None:
@@ -52,34 +44,61 @@ def send_friend_request(request, pk):
 
 	return redirect('accounts:user_page', pk=pk)
 
+def accept_friend_request(request, pk):
+	sender = Customer.objects.get(pk=pk).user
+	receiver = request.user
+	payload = {}
 
+	try:
+		friend_request = FriendRequest.objects.filter(sender=sender, receiver=receiver).order_by('-id')[0]
+	except FriendRequest.DoesNotExist:
+		payload['response'] = "Friend Request does not exist."
 
-    # return redirect('accounts:user_page' pk='{{user_id}}')
+	if friend_request:
+		# found the request. Now accept it
+		friend_request.accept()
+		payload['response'] = "Friend request accepted."
+	else:
+		payload['response'] = "Something went wrong."
 
-
-	# return HttpResponse(json.dumps(payload), content_type="application/json")
-
-
-# def accept_friend_request(request, *args, **kwargs):
-# 	user = request.user
-# 	payload = {}
-# 	if request.method == "GET" and user.is_authenticated:
-# 		friend_request_id = kwargs.get("friend_request_id")
-# 		if friend_request_id:
-# 			friend_request = FriendRequest.objects.get(pk=friend_request_id)
-# 			# confirm that is the correct request
-# 			if friend_request.receiver == user:
-# 				if friend_request:
-# 					# found the request. Now accept it
-# 					friend_request.accept()
-# 					payload['response'] = "Friend request accepted."
-# 				else:
-# 					payload['response'] = "Something went wrong."
-# 			else:
-# 				payload['response'] = "That is not your request to accept."
-# 		else:
-# 			payload['response'] = "Unable to accept that friend request."
-# 	else:
-# 		payload['response'] = "You must ne authenticated to accept a friend request."
-# 	return HttpResponse(json.dumps(payload), content_type="application/json")
+	return redirect('accounts:user_page', pk=pk)
 	
+def decline_friend_request(request, pk):
+	sender = Customer.objects.get(pk=pk).user
+	receiver = request.user
+	payload = {}
+
+	try:
+		friend_request = FriendRequest.objects.filter(sender=sender, receiver=receiver).order_by('-id')[0]
+	except FriendRequest.DoesNotExist:
+		payload['response'] = "Friend request does not exist."
+
+	if friend_request:
+		# found the request. Now decline it
+		friend_request.decline()
+		payload['response'] = "Friend request declined."
+	else:
+		payload['response'] = "Something went wrong."
+	
+	return redirect('accounts:user_page', pk=pk)
+
+def cancel_friend_request(request, pk):
+	receiver = Customer.objects.get(pk=pk).user
+	sender = request.user
+	payload = {}
+
+	try:
+		# friend_request = FriendRequest.objects.get(sender=sender, receiver=receiver)
+		friend_request = FriendRequest.objects.filter(sender=sender, receiver=receiver).order_by('-id')[0]
+	except FriendRequest.DoesNotExist:
+		payload['response'] = "Friend request does not exist."
+
+
+	if friend_request:
+		# found the request. Now cancel it
+		friend_request.cancel()
+		payload['response'] = "Friend request canceled."
+	else:
+		payload['response'] = "Something went wrong."
+
+	return redirect('accounts:user_page', pk=pk)
