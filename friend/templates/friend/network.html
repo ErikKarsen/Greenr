@@ -38,27 +38,26 @@
     </div>
 
     <div class="profile-container container" id="friends-container">
-        <div class="friend-requests" id="friends-flex">
+        <div class="friend-requests" id="friends-list">
             <header>
                 <h4>Yours Friends:</h4>
             </header>
             <div class="container-wide-profile">
                 <ul>
                     {% for profile in friends_list %}
-
-                    <li class="wide-profile-card">
+                        <li class="wide-profile-card">
                             <div class="wide-profile-pic image-container">
-                                <img src="{{profile.customer.profile_pic.url}}" />
+                                <a href="{% url 'accounts:user_page' pk=profile.id %}"><img src="{{profile.customer.profile_pic.url}}" /></a>
                             </div>
                             <div class="profile-details">
                                 <div class="profile-name">
-                                    {{profile.customer.first_name}} {{profile.customer.last_name}}
+                                    <a href="{% url 'accounts:user_page' pk=profile.id %}">{{profile.customer.first_name}} {{profile.customer.last_name}}</a>
                                 </div>
                                 <div class="profile-title">
                                     {{profile.customer.title}}
                                 </div>
                             </div>
-                    </li>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
