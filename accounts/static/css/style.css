@@ -767,42 +767,67 @@ label.valid:after {
     padding: 5px;
     font-size: 14px;
     font-weight: normal;
+    color:green;
 }
 
 .container-wide-profile{
     background: #FFF;
     display: flex;
     flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
 }
 
-.wide_profile_card {
-
-    width: 100%;
-
-
-    /* display: flex; */
-    /* align-items: inherit;
-    visibility: visible;
+.wide-profile-card{
+    display: flex;
+    align-items: center;
     position: relative;
-    opacity: 1;
-    transition: visibility .4s ease-in,opacity .4s ease-in;
-    border: 0;
-    position: relative;
-    margin: 0;
-    padding: 8px 8px 9px; */
+    padding: 8px 8px 9px;
+    border-bottom: 1px solid rgba(0,0,0,.15);
 }
 
-.wide_profile_pic {
-    background: white;
+.wide-profile-pic{
+    transform: translate(0px,0px);
+}
+
+.wide-profile-pic img{
     width: 80px;
-    height: 80px;
+    height: 72px;
     border-radius: 50%;
-    padding: 5px;
+    object-fit: cover;
 }
 
-
-.display-flex {
-    /* display: flex; */
-    /* flex-direction: -; */
+.profile-details{
+    padding: 20px;
 }
 
+.profile-name{
+    font-weight: bold;
+}
+
+.profile-btn{
+    margin-left: auto;
+}
+
+.small{
+    padding: .375rem .975rem;
+    font-size: .6rem;
+}
+
+#decline-btn{
+    background-color: #d9534f;
+}
+
+#decline-btn:hover{
+    color: #FFF;
+}
+
+#friends-container{
+    margin-top: 20px;
+    border-radius: 20px;
+}
+
+.wide-profile-card:last-child {
+    border-radius: 0px 0px 20px 20px;
+    border-bottom: 0px;
+}

@@ -106,8 +106,6 @@ def cancel_friend_request(request, pk):
 
 def get_friends_list(request, pk):
 	context = {}
-	customer = Customer.objects.get(pk=pk)
-	context['customer'] = customer
 	receiver = Customer.objects.get(pk=pk).user
 	user = request.user
 
@@ -120,4 +118,8 @@ def get_friends_list(request, pk):
 			return HttpResponse("You can't view another users friend requets.")
 	else:
 		redirect("login")
+
+	friends_list = FriendList.objects.get(user=user).friends.all()
+
+	context['friends_list'] = friends_list
 	return render(request, "friend/network.html", context)

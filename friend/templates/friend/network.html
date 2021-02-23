@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="user-main main">
+<div class="user-main main friends-main">
     <div class="profile-container container">
         <div class="friend-requests">
             <header>
@@ -12,16 +12,54 @@
             </header>
             <div class="container-wide-profile">
                 <ul>
-                    <li class="wide-profile-card">
-                            <div class="wide-profile-pic">
-                                <img src="C:\Users\erik1\Desktop\git\Greenr\accounts\static\images\default-user-image.png"/>
-                            </div>
-                            <!-- <div class="profile-details"></div>
-                            <div>
-                                
-                            </div> -->
+                    {% for request in friend_requests %}
 
+                    <li class="wide-profile-card">
+                            <div class="wide-profile-pic image-container">
+                                <img src="{{request.sender.customer.profile_pic.url}}" />
+                            </div>
+                            <div class="profile-details">
+                                <div class="profile-name">
+                                    {{request.sender.customer.first_name}} {{request.sender.customer.last_name}}
+                                </div>
+                                <div class="profile-title">
+                                    {{request.sender.customer.title}}
+                                </div>
+                            </div>
+                            <div class="profile-btn">
+                                <a href="{% url 'friend:friend-request-decline' pk=request.sender.customer.user.id %}" class="btn solid small" id="decline-btn">Decline</a>
+                                <a href="{% url 'friend:friend-request-accept' pk=request.sender.customer.user.id %}" class="btn solid small">Accept</a>
+                            </div>
                     </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-container container" id="friends-container">
+        <div class="friend-requests" id="friends-flex">
+            <header>
+                <h4>Yours Friends:</h4>
+            </header>
+            <div class="container-wide-profile">
+                <ul>
+                    {% for profile in friends_list %}
+
+                    <li class="wide-profile-card">
+                            <div class="wide-profile-pic image-container">
+                                <img src="{{profile.customer.profile_pic.url}}" />
+                            </div>
+                            <div class="profile-details">
+                                <div class="profile-name">
+                                    {{profile.customer.first_name}} {{profile.customer.last_name}}
+                                </div>
+                                <div class="profile-title">
+                                    {{profile.customer.title}}
+                                </div>
+                            </div>
+                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
