@@ -748,3 +748,61 @@ label.valid:after {
 #update_image{
     transform: translate(0px,0px);
 }
+
+.friend-requests {
+    height: 105px;
+    background: #FFF;
+    border-radius: 20px;
+}
+
+.friend-requests header {
+    display: flex;
+    padding: 8px 8px 8px 16px;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    border-radius: 20px 20px 0px 0px;
+    font-size: 14px;
+}
+
+.friend-requests h4 {
+    padding: 5px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.container-wide-profile{
+    background: #FFF;
+    display: flex;
+    flex-direction: column;
+}
+
+.wide_profile_card {
+
+    width: 100%;
+
+
+    /* display: flex; */
+    /* align-items: inherit;
+    visibility: visible;
+    position: relative;
+    opacity: 1;
+    transition: visibility .4s ease-in,opacity .4s ease-in;
+    border: 0;
+    position: relative;
+    margin: 0;
+    padding: 8px 8px 9px; */
+}
+
+.wide_profile_pic {
+    background: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+
+.display-flex {
+    /* display: flex; */
+    /* flex-direction: -; */
+}
+

@@ -102,3 +102,22 @@ def cancel_friend_request(request, pk):
 		payload['response'] = "Something went wrong."
 
 	return redirect('accounts:user_page', pk=pk)
+
+
+def get_friends_list(request, pk):
+	context = {}
+	customer = Customer.objects.get(pk=pk)
+	context['customer'] = customer
+	receiver = Customer.objects.get(pk=pk).user
+	user = request.user
+
+	
+	if user.is_authenticated:
+		if receiver == user:
+			friend_requests = FriendRequest.objects.filter(receiver=receiver, is_active=True)
+			context['friend_requests'] = friend_requests
+		else:
+			return HttpResponse("You can't view another users friend requets.")
+	else:
+		redirect("login")
+	return render(request, "friend/network.html", context)
