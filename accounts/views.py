@@ -16,7 +16,7 @@ from django.db.models import Sum
 # Create your views here.
 def registerPage(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('accounts:home')
     else:
         form = CreateUserForm()
         
@@ -33,7 +33,7 @@ def registerPage(request):
                 )
 
                 messages.success(request, 'Account for ' + username + ' was successfully created.')
-                return redirect('login')
+                return redirect('accounts:login')
                 
 
 
@@ -42,7 +42,7 @@ def registerPage(request):
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('accounts:home')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -54,9 +54,9 @@ def loginPage(request):
                 login(request, user)
 
                 if request.user.customer.first_name:
-                    return redirect('home')
+                    return redirect('accounts:home')
                 else:
-                    return redirect('update_customer')
+                    return redirect('accounts:update_customer')
             else:
                 messages.info(request, 'Invalid Username or Password')
                 
@@ -65,7 +65,7 @@ def loginPage(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect('accounts:login')
 
 @login_required(login_url='login')
 def home(request):
@@ -138,7 +138,7 @@ def updateCustomer(request):
         form = CustomerForm(request.POST, request.FILES, instance=customer)
         if form.is_valid():
             form.save()
-            return redirect('user_page')
+            return redirect('accounts:user_page')
         print(form.errors)
 
     context = {'form': form}
@@ -153,7 +153,7 @@ def createJourney(request):
             stock = form.save(commit=False)
             stock.customer = Customer.objects.get(user=request.user.id)
             stock.save()
-            return redirect('home')
+            return redirect('accounts:home')
 
     context = {'form': form}
     return render(request, 'accounts/journey_form.html', context)
@@ -167,7 +167,7 @@ def updateJourney(request, pk):
         form = JourneyForm(request.POST, instance=journey)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('accounts:home')
 
     context = {'form': form}
     return render(request, 'accounts/journey_form.html', context)
@@ -178,7 +178,7 @@ def deleteJourney(request, pk):
 
     if request.method == 'POST':
         journey.delete()
-        return redirect('home')
+        return redirect('accounts:home')
         
     context = {'item': journey}
     return render(request, 'accounts/delete.html', context)
