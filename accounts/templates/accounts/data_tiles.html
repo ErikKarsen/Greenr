@@ -15,12 +15,38 @@
         </div>
     </div>
 
-    <div class="tile tile2">
-        <h2 class="tile2-data">$10,00</h2>
-        <p class="tile2-desc">Dollars in Revenue</p>
+    <div class="tile gauge">
+      <div class="card emissions">
+        <div class="circle">
+          <div class="bar"></div>
+          <div class="box"><span></span></div>
+        </div>
+      </div>   
+      <div class="title" id="gauge-title">CO<div class="small">2</div>
+      <div class="description" id="gauge-description">emitted this month</div>
+
     </div>
+    </div>
+    
+
+
     <div class="tile tile3">
         <h2 class="tile3-data">$10,000</h2>
         <p class="tile3-desc">Dollars in Revenue</p>
     </div>
 </div>
+
+<script>
+    let options = {
+      startAngle: -1.55,
+      size: 150,
+      fill: {gradient: ['#ff0f0f', '#008000', '#008000']}
+    }
+    $(".circle .bar").circleProgress(options).on('circle-animation-progress',
+    function(event, progress, stepValue){
+      $(this).parent().find("span").text(String(stepValue.toFixed(2)*1000) + "kg");
+    });
+    $(".emissions .bar").circleProgress({
+      value: {{total_emissions}}/1000
+    });
+</script>
