@@ -80,9 +80,9 @@ def home(request):
     try:
         friend_list = FriendList.objects.get(user=user)
     except FriendList.DoesNotExist:
-        friend_list = FriendList(user=account)
+        friend_list = FriendList(user=user)
         friend_list.save()
-        
+
     friends_list = friend_list.friends.all()
 
     profiles = Customer.objects.exclude(id=user.id)
