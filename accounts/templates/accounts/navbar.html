@@ -15,7 +15,7 @@
                         <a href="{% url 'accounts:create_journey' %}">Track</a>
                     </li>
                     <li class="nav-link" style="--i: .85s">
-                        <a href="#">Offset</a>
+                        <a href="{% url 'friend:get-friend-list' pk=user.id %}">My Network</a>
                     </li>
                 </ul>
             </div>
