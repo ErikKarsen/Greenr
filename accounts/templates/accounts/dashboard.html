@@ -30,8 +30,8 @@
                 <td>{{i.duration_hours}}hr {{i.duration_minutes}}min</td>
                 <td>{{60|mul:i.duration_hours|add:i.duration_minutes|mul:i.transportation.carbon_price|floatformat}}kg</td>
                 <td>{{i.status}}</td>
-                <td><a class="primary-button update-button" href="{% url 'accounts:update_journey' i.id %}">Update</a></td>
-                <td><a class="primary-button delete-button" href="{% url 'accounts:delete_journey' i.id %}">Delete</a></td>
+                <td><a class="primary-button update-button" href="{% url 'accounts:update_journey' pk=i.id %}">Update</a></td>
+                <td><a class="primary-button delete-button" href="{% url 'accounts:delete_journey' pk=i.id %}">Delete</a></td>
             </tr>
             {% endfor %}
 

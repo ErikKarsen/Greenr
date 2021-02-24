@@ -21,7 +21,14 @@
             </div>
 
             <div class="log-sign" style="--i: 1.1s">
-                <a href="{% url 'accounts:logout' %}" class="btn solid">Logout</a>
+                <div class="dropdown">
+                    <div class="dropbtn"><img src="{{user.customer.profile_pic.url}}"/></div>
+                    <div class="dropdown-content">
+                        <a href="{% url 'accounts:user_page' user.id %}">Profile</a>
+                        <a href="#">Settings</a>
+                        <a href="{% url 'accounts:logout' %}">Log out</a>
+                    </div>
+                </div>
             </div>
             {% else %}
             <div class="log-sign" style="--i: 1.1s">
