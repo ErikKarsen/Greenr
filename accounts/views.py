@@ -98,9 +98,12 @@ def home(request):
             for profile in random_profiles:
                 if profile not in suggested_profiles:
                     if profile not in friends_list:
-
                         profiles_list.remove(profile)
                         suggested_profiles.append(profile)
+                
+            if len(suggested_profiles) >= 3:
+                break
+
     except ValueError:
         pass
 
