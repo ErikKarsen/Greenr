@@ -167,7 +167,7 @@ def updateCustomer(request):
         form = CustomerForm(request.POST, request.FILES, instance=customer)
         if form.is_valid():
             form.save()
-            return redirect('accounts:user_page', pk=customer.id)
+            return redirect('accounts:home', pk=customer.id)
         print(form.errors)
 
     context = {'form': form}
