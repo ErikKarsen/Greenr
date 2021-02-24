@@ -16,7 +16,7 @@ urlpatterns = [
     path('friend_request_decline/<str:pk>/', decline_friend_request, name='friend-request-decline'),
     path('friend_request_cancel/<str:pk>/', cancel_friend_request, name='friend-request-cancel'),
 
-    path('mynetwork/<str:pk>/', get_friends_list, name='friend-request-cancel'),
+    path('mynetwork', get_friends_list, name='get-friend-list'),
 
 
 ]

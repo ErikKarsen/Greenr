@@ -1,13 +1,18 @@
 <div class="tile-container">
 
     <div class="tile tile1">
-
-        <h2 class="tile1-data">
-            {{total_emissions}}kg
-
-
-        </h2>
-        <p class="tile1-desc">Carbon Dioxide (CO2) Emitted</p>
+        <div class="upper-container mini-upper-container">
+            <div class="image-container mini-image-container">
+                <a href="{% url 'accounts:user_page' pk=user.id %}"><img src="{{user.customer.profile_pic.url}}"/></a>
+            </div>
+            <a href="{% url 'accounts:user_page' pk=user.id %}"><h3>{{user.customer.first_name}} {{user.customer.last_name}}</h3></a>
+        </div>
+        <div class="middle-container  mini-middle-container">
+            <div>
+                <h4>{{user.customer.title}}</h4>
+                <p>Greater London Area</p>
+            </div>
+        </div>
     </div>
 
     <div class="tile tile2">
