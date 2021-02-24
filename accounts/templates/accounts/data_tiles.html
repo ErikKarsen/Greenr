@@ -1,52 +1,72 @@
+{% load mathfilters %}
+
+
 <div class="tile-container">
-
-    <div class="tile tile1">
-        <div class="upper-container mini-upper-container">
-            <div class="image-container mini-image-container">
-                <a href="{% url 'accounts:user_page' pk=user.id %}"><img src="{{user.customer.profile_pic.url}}"/></a>
-            </div>
-            <a href="{% url 'accounts:user_page' pk=user.id %}"><h3>{{user.customer.first_name}} {{user.customer.last_name}}</h3></a>
-        </div>
-        <div class="middle-container  mini-middle-container">
-            <div>
-                <h4>{{user.customer.title}}</h4>
-                <p>Greater London Area</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="tile gauge">
-      <div class="card emissions">
-        <div class="circle">
-          <div class="bar"></div>
-          <div class="box"><span></span></div>
-        </div>
-      </div>   
-      <div class="title" id="gauge-title">CO<div class="small">2</div>
-      <div class="description" id="gauge-description">emitted this month</div>
-
-    </div>
-    </div>
-    
+		<div class="tile tile1">
+				<div class="upper-container mini-upper-container">
+						<div class="image-container mini-image-container">
+								<a href="{% url 'accounts:user_page' pk=user.id %}"><img src="{{user.customer.profile_pic.url}}"/></a>
+						</div>
+						<a href="{% url 'accounts:user_page' pk=user.id %}"><h3>{{user.customer.first_name}} {{user.customer.last_name}}</h3></a>
+				</div>
+				<div class="middle-container  mini-middle-container">
+						<div>
+								<h4>{{user.customer.title}}</h4>
+								<p>Greater London Area</p>
+						</div>
+				</div>
+		</div>
+		<div class="tile gauge">
+			<div class="card emissions">
+				<div class="circle">
+						<div class="bar"></div>
+						<div class="box"><span></span></div>
+					</div>
+				</div>   
+				<div class="title">CO<div class="small">2</div></div>
+				<div class="description">emitted this month</div>
+	
 
 
-    <div class="tile tile3">
-        <h2 class="tile3-data">$10,000</h2>
-        <p class="tile3-desc">Dollars in Revenue</p>
-    </div>
+			<div class="gauge-stats">
+				<div class="stat-container">
+					<span class="dot"></span>
+					<div class="stat-text">
+						<div class="stat">Walk</div>
+						<div class="stat-description">Most used transport</div>
+					</div>
+				</div>
+
+				<div class="stat-container">
+					<span class="dot"><div class="stat">67%</div></span>
+					<div class="stat-text">
+					<div class="stat">1000 kg</div>
+					<div class="stat-description">Monthly allowance</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+
+
+		<div class="tile tile3">
+				<h2 class="tile3-data">$10,000</h2>
+				<p class="tile3-desc">Dollars in Revenue</p>
+		</div>
 </div>
 
 <script>
-    let options = {
-      startAngle: -1.55,
-      size: 150,
-      fill: {gradient: ['#ff0f0f', '#008000', '#008000']}
-    }
-    $(".circle .bar").circleProgress(options).on('circle-animation-progress',
-    function(event, progress, stepValue){
-      $(this).parent().find("span").text(String(stepValue.toFixed(2)*1000) + "kg");
-    });
-    $(".emissions .bar").circleProgress({
-      value: {{total_emissions}}/1000
-    });
+		let options = {
+			startAngle: -1.55,
+			size: 150,
+			fill: {gradient: ['#ff0f0f', '#008000', '#008000']}
+		}
+		$(".circle .bar").circleProgress(options).on('circle-animation-progress',
+		function(event, progress, stepValue){
+			$(this).parent().find("span").text(String(stepValue.toFixed(2)*1000) + "kg");
+		});
+		$(".emissions .bar").circleProgress({
+			value: {{total_emissions}}/1000
+		});
 </script>
