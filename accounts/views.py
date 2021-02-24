@@ -75,8 +75,15 @@ def home(request):
     journeys = request.user.customer.journey_set.all()
     context['journeys'] = journeys
     user = request.user
-    friends_list = FriendList.objects.get(user=user).friends.all()
 
+
+    try:
+        friend_list = FriendList.objects.get(user=user)
+    except FriendList.DoesNotExist:
+        friend_list = FriendList(user=account)
+        friend_list.save()
+        
+    friends_list = friend_list.friends.all()
 
     profiles = Customer.objects.exclude(id=user.id)
 
