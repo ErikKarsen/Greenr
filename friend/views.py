@@ -1,4 +1,5 @@
 # Create your views here.
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import json
@@ -8,6 +9,7 @@ from accounts.views import userPage
 from friend.models import FriendRequest, FriendList
 
 
+@login_required(login_url='login')
 def send_friend_request(request, pk):
 	user = request.user
 	payload = {}
@@ -44,6 +46,7 @@ def send_friend_request(request, pk):
 
 	return redirect('accounts:user_page', pk=pk)
 
+@login_required(login_url='login')
 def accept_friend_request(request, pk):
 	sender = Customer.objects.get(pk=pk).user
 	receiver = request.user
@@ -62,7 +65,8 @@ def accept_friend_request(request, pk):
 		payload['response'] = "Something went wrong."
 
 	return redirect('accounts:user_page', pk=pk)
-	
+
+@login_required(login_url='login')
 def decline_friend_request(request, pk):
 	sender = Customer.objects.get(pk=pk).user
 	receiver = request.user
@@ -82,6 +86,7 @@ def decline_friend_request(request, pk):
 	
 	return redirect('accounts:user_page', pk=pk)
 
+@login_required(login_url='login')
 def cancel_friend_request(request, pk):
 	receiver = Customer.objects.get(pk=pk).user
 	sender = request.user
@@ -103,23 +108,16 @@ def cancel_friend_request(request, pk):
 
 	return redirect('accounts:user_page', pk=pk)
 
-
-def get_friends_list(request, pk):
+@login_required(login_url='login')
+def get_friends_list(request):
 	context = {}
-	receiver = Customer.objects.get(pk=pk).user
 	user = request.user
 
 	
-	if user.is_authenticated:
-		if receiver == user:
-			friend_requests = FriendRequest.objects.filter(receiver=receiver, is_active=True)
-			context['friend_requests'] = friend_requests
-		else:
-			return HttpResponse("You can't view another users friend requets.")
-	else:
-		redirect("login")
+	friend_requests = FriendRequest.objects.filter(receiver=user, is_active=True)
+	context['friend_requests'] = friend_requests
 
 	friends_list = FriendList.objects.get(user=user).friends.all()
-
 	context['friends_list'] = friends_list
+
 	return render(request, "friend/network.html", context)
