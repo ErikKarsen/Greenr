@@ -85,14 +85,17 @@ def home(request):
 
     suggested_profiles = []
 
-    while profiles_list:
-        random_profiles = random.sample(profiles_list, 3)
-        for profile in random_profiles:
-            if profile not in suggested_profiles:
-                if profile not in friends_list:
+    try:
+        while profiles_list:
+            random_profiles = random.sample(profiles_list, 3)
+            for profile in random_profiles:
+                if profile not in suggested_profiles:
+                    if profile not in friends_list:
 
-                    profiles_list.remove(profile)
-                    suggested_profiles.append(profile)
+                        profiles_list.remove(profile)
+                        suggested_profiles.append(profile)
+    except ValueError:
+        pass
 
     context['suggested_profiles'] = suggested_profiles
 
