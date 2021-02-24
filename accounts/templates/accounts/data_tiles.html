@@ -48,12 +48,30 @@
 
 		</div>
 		
-
-
-		<div class="tile tile3">
-				<h2 class="tile3-data">$10,000</h2>
-				<p class="tile3-desc">Dollars in Revenue</p>
-		</div>
+		<div class="tile profiles-tile">
+            <header>
+                <h4>Suggested For You</h4>
+            </header>
+            <div class="container-suggested-profile">
+                <ul>
+                    {% for profile in suggested_profiles %}
+                        <li class="mini-profile-card">
+                            <div class="mini-profile-pic image-container">
+                                <a href="{% url 'accounts:user_page' pk=profile.user.id %}"><img src="{{profile.profile_pic.url}}" /></a>
+                            </div>
+                            <div class="mini-profile-details">
+                                <div class="profile-name">
+                                    <a href="{% url 'accounts:user_page' pk=profile.user.id %}">{{profile.first_name}} {{profile.last_name}}</a>
+                                </div>
+                                <div class="profile-title">
+                                    {{profile.title}}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 </div>
 
 <script>

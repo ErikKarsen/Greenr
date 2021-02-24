@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import random
+
 
 from .forms import *
 from .models import *
@@ -69,16 +71,39 @@ def logoutUser(request):
 
 @login_required(login_url='login')
 def home(request):
-
+    context = {}
     journeys = request.user.customer.journey_set.all()
+    context['journeys'] = journeys
+    user = request.user
+    friends_list = FriendList.objects.get(user=user).friends.all()
+
+
+    profiles = Customer.objects.exclude(id=user.id)
+
+    profiles_list = list(profiles)
+
+
+    suggested_profiles = []
+
+    while profiles_list:
+        random_profiles = random.sample(profiles_list, 3)
+        for profile in random_profiles:
+            if profile not in suggested_profiles:
+                if profile not in friends_list:
+
+                    profiles_list.remove(profile)
+                    suggested_profiles.append(profile)
+
+    context['suggested_profiles'] = suggested_profiles
 
 
     total_emissions = 0
     for i in journeys:
         duration = i.duration_hours * 60 + i.duration_minutes
         total_emissions += duration * i.transportation.carbon_price
+    context['total_emissions'] = round(total_emissions, 2)
+    
 
-    context = {'journeys': journeys, 'total_emissions': round(total_emissions, 2)}
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url='login')
@@ -176,6 +201,7 @@ def updateJourney(request, pk):
 @login_required(login_url='login')
 def deleteJourney(request, pk):
     journey = Journey.objects.get(id=pk)
+
 
     if request.method == 'POST':
         journey.delete()
