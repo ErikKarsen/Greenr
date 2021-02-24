@@ -1044,7 +1044,7 @@ label.valid:after {
 
 .mini-profile-pic img{
     width: 48px;
-    height: 48px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
 }

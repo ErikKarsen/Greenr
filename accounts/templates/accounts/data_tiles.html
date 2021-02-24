@@ -82,7 +82,7 @@
 		}
 		$(".circle .bar").circleProgress(options).on('circle-animation-progress',
 		function(event, progress, stepValue){
-			$(this).parent().find("span").text(String(stepValue.toFixed(2)*1000) + "kg");
+			$(this).parent().find("span").text(String(stepValue.toFixed(3)*1000) + "kg");
 		});
 		$(".emissions .bar").circleProgress({
 			value: {{total_emissions}}/1000
