@@ -12,11 +12,11 @@
     <table class="content-table">
         <thead>
             <tr>
-                <th>Date</th>
+                <th class="hide-column-mobile">Date</th>
                 <th>Transportation Method</th>
                 <th>Duration</th>
                 <th>Carbon Cost (CO2)</th>
-                <th>Status</th>
+                <th class="hide-column-mobile">Status</th>
                 <th>Update</th>
                 <th>Delete</th>
             </tr>
@@ -25,11 +25,11 @@
 
             {% for i in journeys %}
             <tr>
-                <td>{{i.date_created}}</td>
+                <td class="hide-column-mobile">{{i.date_created}}</td>
                 <td>{{i.transportation}}</td>
                 <td>{{i.duration_hours}}hr {{i.duration_minutes}}min</td>
                 <td>{{60|mul:i.duration_hours|add:i.duration_minutes|mul:i.transportation.carbon_price|floatformat}}kg</td>
-                <td>{{i.status}}</td>
+                <td class="hide-column-mobile">{{i.status}}</td>
                 <td><a class="primary-button update-button" href="{% url 'accounts:update_journey' pk=i.id %}">Update</a></td>
                 <td><a class="primary-button delete-button" href="{% url 'accounts:delete_journey' pk=i.id %}">Delete</a></td>
             </tr>
