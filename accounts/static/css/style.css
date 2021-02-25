@@ -510,65 +510,13 @@ label.valid:after {
     align-items: center;
 }
 
-/* Responsive Page Design */
-@media (max-width: 920px){
-    .signup-content, .signin-content {
-        flex-direction: column;
-        justify-content: center; 
-    }
-    
-    .signup-form {
-        margin-left: 0px;
-        margin-right: 0px;
-        padding-left: 0px;
-        padding: 0 30px; 
-    }
-    
-    .signin-image {
-        margin-left: 0px;
-        margin-right: 0px;
-        margin-top: 50px;
-        order: 2; 
-    }
-    
-    .signup-form, .signup-image, .signin-form, .signin-image {
-        width: auto; 
-    }
-    
-    .form-button {
-        text-align: center; 
-    }
-    
-    .signin-form {
-        order: 1;
-        margin-right: 0px;
-        margin-left: 0px;
-        padding: 0 30px; 
-    }
-    
-    .form-title {
-        text-align: center; 
-    } 
-    
-    .container {
-        width: 80%;
-    }
 
-    .split-container {
-        flex-direction: column;
-        justify-content: center; }
-
-    .table-container {
-        width: 100%;
-        border-radius: 20px;
-        align-items: center;
-        padding: 20px }
-}
 
 /* Table Design */
 .content-table {
     width: 100%;
     font-size: 0.9em;
+    overflow-x: auto;
 }
 
 .content-table thead tr {
@@ -1069,4 +1017,68 @@ label.valid:after {
 
 .container-suggested-profile ul{
     width: 100%;
+}
+
+
+
+/* Responsive Page Design */
+@media (max-width: 920px){
+    .signup-content, .signin-content {
+        flex-direction: column;
+        justify-content: center; 
+    }
+    
+    .signup-form {
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-left: 0px;
+        padding: 0 30px; 
+    }
+    
+    .signin-image {
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 50px;
+        order: 2; 
+    }
+    
+    .signup-form, .signup-image, .signin-form, .signin-image {
+        width: auto; 
+    }
+    
+    .form-button {
+        text-align: center; 
+    }
+    
+    .signin-form {
+        order: 1;
+        margin-right: 0px;
+        margin-left: 0px;
+        padding: 0 30px; 
+    }
+    
+    .form-title {
+        text-align: center; 
+    } 
+    
+    .container {
+        width: 80%;
+    }
+
+    .hide-column-mobile{
+        display: none;
+    }
+}
+
+
+@media (max-width: 1295px){
+    .split-container {
+        flex-direction: column;
+    }
+
+    .table-container {
+        width: 100%;
+        border-radius: 20px;
+        align-items: center;
+        padding: 20px }
 }
