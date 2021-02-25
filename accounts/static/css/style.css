@@ -643,12 +643,12 @@ label.valid:after {
     color: green;
     opacity: .8;
     font-weight: bold;
-    transform: translate(60px,20px);
+    transform: translate(28px,20px);
 }
 
 .middle-container p{
     box-sizing: border-box;
-    transform: translate(60px,20px);
+    transform: translate(28px,20px);
 }
 
 .middle-container .btn{
@@ -678,7 +678,7 @@ label.valid:after {
     padding: 20px 20px 20px 50px;
     display: flex;
     align-items: baseline;
-    transform: translate(0px,-40px);
+    transform: translate(0px,-30px);
 }
 
 .lower-container p{
