@@ -19,6 +19,11 @@ urlpatterns = [
     path('update_journey/<str:pk>/', views.updateJourney, name='update_journey'),
     path('delete_journey/<str:pk>/', views.deleteJourney, name='delete_journey'),
 
+
+    path('create_meal', views.createMeal, name='create_meal'),
+    path('update_meal/<str:pk>/', views.updateMeal, name='update_meal'),
+    path('delete_meal/<str:pk>/', views.deleteMeal, name='delete_meal'),
+
     path('reset_password/',
      auth_views.PasswordResetView.as_view(template_name='accounts/password_reset.html'),
      name='reset_password'),

@@ -229,3 +229,38 @@ def deleteJourney(request, pk):
         
     # context = {'item': journey}
     # return render(request, 'accounts/delete.html', context)
+
+@login_required(login_url='login')
+def createMeal(request):
+    form = MealForm()
+    if request.method == 'POST':
+        form = MealForm(request.POST)
+        if form.is_valid():
+            stock = form.save(commit=False)
+            stock.customer = Customer.objects.get(user=request.user.id)
+            stock.save()
+            return redirect('accounts:home')
+
+    context = {'form': form}
+    return render(request, 'accounts/meal_form.html', context)
+
+@login_required(login_url='login')
+def updateMeal(request, pk):
+    meal = Meal.objects.get(id=pk)
+    form = MealForm(instance=meal)
+
+    if request.method == 'POST':
+        form = MealForm(request.POST, instance=meal)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:home')
+
+    context = {'form': form}
+    return render(request, 'accounts/meal_form.html', context)
+
+@login_required(login_url='login')
+def deleteMeal(request, pk):
+    meal = Meal.objects.get(id=pk)
+
+    meal.delete()
+    return redirect('accounts:home')
