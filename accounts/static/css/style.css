@@ -1092,6 +1092,19 @@ label.valid:after {
     transform: translate(5px, 5px);
 }
 
+.container-404 .form-title{
+    padding: 40px 0px 0px 40px;
+}
+
+.container-404 p{
+    padding-left: 40px;
+    width: 60%;
+}
+
+.container-404 .btn{
+    margin: 40px 80px;
+}
+
 @media (max-width: 1295px){
     .split-container {
         flex-direction: column;
