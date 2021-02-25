@@ -215,10 +215,13 @@ def updateJourney(request, pk):
 def deleteJourney(request, pk):
     journey = Journey.objects.get(id=pk)
 
+    journey.delete()
+    return redirect('accounts:home')
 
-    if request.method == 'POST':
-        journey.delete()
-        return redirect('accounts:home')
+
+    # if request.method == 'POST':
+    #     journey.delete()
+    #     return redirect('accounts:home')
         
-    context = {'item': journey}
-    return render(request, 'accounts/delete.html', context)
+    # context = {'item': journey}
+    # return render(request, 'accounts/delete.html', context)
