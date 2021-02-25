@@ -60,7 +60,7 @@
             <tr>
                 <td class="hide-column-mobile">{{i.date_created}}</td>
                 <td>{{i.diet}}</td>
-                <td>kg</td>
+                <td>{{i.diet.carbon_price_per_meal}}kg</td>
                 {% if i.status %}
                     <td class="hide-column-mobile">Offset</td>
                 {% else %}

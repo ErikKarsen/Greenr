@@ -118,9 +118,12 @@ def home(request):
     for i in journeys:
         duration = i.duration_hours * 60 + i.duration_minutes
         total_emissions += duration * i.transportation.carbon_price
+
+    for i in recent_meals:
+        total_emissions += i.diet.carbon_price_per_meal
+    
     context['total_emissions'] = round(total_emissions, 2)
     
-
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url='login')
