@@ -18,6 +18,10 @@ from django.db.models import Sum
 
 
 # Create your views here.
+
+def error_404_view(request, exception):
+    return render(request, 'accounts/404.html')
+
 def registerPage(request):
     if request.user.is_authenticated:
         return redirect('accounts:home')

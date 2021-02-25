@@ -1,0 +1,18 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="main">
+    <div class="container">
+        <h2 class="form-title" id="title404">404 Error Page</h2>
+
+        <p>Oops! This page does not exist. A team of highly specialised monkeys will look into it for you</p>
+
+
+        <a href="{% url 'accounts:home' %}" class="btn solid">Return Home</a>
+
+    </div>
+</div>
+
+
+{% endblock %}
