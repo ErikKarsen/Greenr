@@ -1092,21 +1092,21 @@ label.valid:after {
     transform: translate(5px, 5px);
 }
 
-.container-404{
+.error-container{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.container-404 .form-title{
+.error-container .form-title{
     padding: 40px 0px 0px 0px;
 }
 
-.container-404 p{
+.error-container p{
     width: 80%;
 }
 
-.container-404 .btn{
+.error-container .btn{
     margin: 40px;
 }
 
