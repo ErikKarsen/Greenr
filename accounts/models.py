@@ -44,3 +44,24 @@ class Journey(models.Model):
     duration_minutes = models.PositiveIntegerField(null=True, validators=[MinValueValidator(0), MaxValueValidator(59)], default=0)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS, default="Not Offset")
+
+class Diet(models.Model):
+    CATEGORY = (
+            ('Low Carbon Emission', 'Low Carbon Emission'),
+            ('High Carbon Emission', 'High Carbon Emission'),
+            )
+
+    name = models.CharField(max_length=200, null=True)
+    carbon_price_per_meal = models.FloatField(null=True)
+    description = models.CharField(max_length=200, null=True)
+    category = models.CharField(max_length=200, null=True, choices=CATEGORY)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Meal(models.Model): 
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    diet = models.ForeignKey(Diet, null=True, on_delete=models.SET_NULL)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    is_offset = models.BooleanField(blank=True, null=False, default=False)

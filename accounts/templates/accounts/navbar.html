@@ -11,8 +11,12 @@
 
             <div class="nav-links">
                 <ul>
-                    <li class="nav-link" style="--i: .6s">
-                        <a href="{% url 'accounts:create_journey' %}">Track</a>
+                    <li class="nav-link dropdown" style="--i: .6s; transform: translate(0px, 0px);">
+                        <a class="dropbtn">Track</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'accounts:create_journey' %}">Journey</a>
+                            <a href="{% url 'accounts:create_meal' %}">Meal</a>
+                        </div>
                     </li>
                     <li class="nav-link" style="--i: .85s">
                         <a href="{% url 'friend:get-friend-list' %}">My Network</a>

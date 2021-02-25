@@ -44,6 +44,38 @@
 <div class="table-container">
     <h2 class="table-title">Recent Meals</h2>
     <table class="content-table">
+        <thead>
+            <tr>
+                <th class="hide-column-mobile">Date</th>
+                <th>Diet</th>
+                <th>Carbon Cost (CO2)</th>
+                <th class="hide-column-mobile">Status</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in recent_meals %}
+            <tr>
+                <td class="hide-column-mobile">{{i.date_created}}</td>
+                <td>{{i.diet}}</td>
+                <td>{{i.diet.carbon_price_per_meal}}kg</td>
+                {% if i.status %}
+                    <td class="hide-column-mobile">Offset</td>
+                {% else %}
+                    <td class="hide-column-mobile">Not Offset</td>
+                {% endif %}
+                <td><a class="primary-button update-button" href="{% url 'accounts:update_meal' pk=i.id %}">Update</a></td>
+                <td><a class="primary-button delete-button" href="{% url 'accounts:delete_meal' pk=i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+  </table>
+
+
+
   </table>
 </div>
 

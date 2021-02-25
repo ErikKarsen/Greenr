@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 
 from django.forms import ModelForm
-from .models import Journey, Customer
+from .models import Journey, Customer, Meal
 
 
 class CreateUserForm(UserCreationForm):
@@ -16,6 +16,12 @@ class JourneyForm(ModelForm):
     class Meta:
         model = Journey
         fields = ['transportation', 'duration_hours', 'duration_minutes']
+
+
+class MealForm(ModelForm):
+    class Meta:
+        model = Meal
+        fields = ['diet']
 
 
 class CustomerForm(ModelForm):

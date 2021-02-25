@@ -74,6 +74,10 @@ def home(request):
     context = {}
     journeys = request.user.customer.journey_set.all()
     context['journeys'] = journeys
+
+    recent_meals = request.user.customer.meal_set.all()
+    context['recent_meals'] = recent_meals
+
     user = request.user
 
 
@@ -114,9 +118,12 @@ def home(request):
     for i in journeys:
         duration = i.duration_hours * 60 + i.duration_minutes
         total_emissions += duration * i.transportation.carbon_price
+
+    for i in recent_meals:
+        total_emissions += i.diet.carbon_price_per_meal
+    
     context['total_emissions'] = round(total_emissions, 2)
     
-
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url='login')
@@ -225,3 +232,38 @@ def deleteJourney(request, pk):
         
     # context = {'item': journey}
     # return render(request, 'accounts/delete.html', context)
+
+@login_required(login_url='login')
+def createMeal(request):
+    form = MealForm()
+    if request.method == 'POST':
+        form = MealForm(request.POST)
+        if form.is_valid():
+            stock = form.save(commit=False)
+            stock.customer = Customer.objects.get(user=request.user.id)
+            stock.save()
+            return redirect('accounts:home')
+
+    context = {'form': form}
+    return render(request, 'accounts/meal_form.html', context)
+
+@login_required(login_url='login')
+def updateMeal(request, pk):
+    meal = Meal.objects.get(id=pk)
+    form = MealForm(instance=meal)
+
+    if request.method == 'POST':
+        form = MealForm(request.POST, instance=meal)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:home')
+
+    context = {'form': form}
+    return render(request, 'accounts/meal_form.html', context)
+
+@login_required(login_url='login')
+def deleteMeal(request, pk):
+    meal = Meal.objects.get(id=pk)
+
+    meal.delete()
+    return redirect('accounts:home')
