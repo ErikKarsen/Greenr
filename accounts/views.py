@@ -74,6 +74,10 @@ def home(request):
     context = {}
     journeys = request.user.customer.journey_set.all()
     context['journeys'] = journeys
+
+    recent_meals = request.user.customer.meal_set.all()
+    context['recent_meals'] = recent_meals
+
     user = request.user
 
 
