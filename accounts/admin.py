@@ -7,3 +7,5 @@ from .models import *
 admin.site.register(Customer)
 admin.site.register(Transportation)
 admin.site.register(Journey)
+admin.site.register(Diet)
+admin.site.register(Meal)
