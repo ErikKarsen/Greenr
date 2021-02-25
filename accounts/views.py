@@ -20,12 +20,12 @@ from django.db.models import Sum
 # Create your views here.
 
 def error_404_view(request, exception):
-    context = {'error': '404'}
-    return render(request, 'accounts/error.html')
+    context = {'error': 404}
+    return render(request, 'accounts/error.html', context)
 
-def error_500_view(request, exception):
-    context = {'error': '500'}
-    return render(request, 'accounts/error.html')
+def error_500_view(request):
+    context = {'error': 500}
+    return render(request, 'accounts/error.html', context)
 
 def registerPage(request):
     if request.user.is_authenticated:
