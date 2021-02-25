@@ -1,4 +1,6 @@
 {% load mathfilters %}
+{% load static %}
+
 
 
 <div class="tile-container">
@@ -25,14 +27,32 @@
 				</div>   
 				<div class="title">CO<div class="small">2</div></div>
 				<div class="description">emitted this month</div>
-	
-
 
 			<div class="gauge-stats">
 				<div class="stat-container">
-					<span class="dot"></span>
+					{% if most_common_transport == "Walk" %}
+						<span class="dot"><img src="{% static 'images/icons/walk.png' %}"></span>	
+					{% elif most_common_transport == "Run" %}
+						<span class="dot"><img src="{% static 'images/icons/running.png' %}"></span>	
+					{% elif most_common_transport == "Bicycle" %}
+						<span class="dot"><img src="{% static 'images/icons/bicycle.png' %}"></span>
+					{% elif most_common_transport == "Train" %}
+						<span class="dot"><img src="{% static 'images/icons/train.png' %}"></span>	
+					{% elif most_common_transport == "Bus" %}
+						<span class="dot"><img src="{% static 'images/icons/bus.png' %}"></span>	
+					{% elif most_common_transport == "Motorbike" %}
+						<span class="dot"><img src="{% static 'images/icons/motorbike.png' %}"></span>
+					{% elif most_common_transport == "Carpool" %}
+						<span class="dot"><img src="{% static 'images/icons/carpool.png' %}"></span>	
+					{% elif most_common_transport == "Car" %}
+						<span class="dot"><img src="{% static 'images/icons/car.png' %}"></span>	
+					{% elif most_common_transport == "Plane" %}
+						<span class="dot"><img src="{% static 'images/icons/plane.png' %}"></span>	
+					{% else %}
+						<span class="dot"></span>	
+					{% endif %}
 					<div class="stat-text">
-						<div class="stat">Walk</div>
+						<div class="stat">{{most_common_transport}}</div>
 						<div class="stat-description">Most used transport</div>
 					</div>
 				</div>

@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
+import operator
+
 
 
 from .forms import *
@@ -95,7 +97,6 @@ def home(request):
 
 
     suggested_profiles = []
-
     try:
         while profiles_list:
             random_profiles = random.sample(profiles_list, 3)
@@ -110,20 +111,30 @@ def home(request):
 
     except ValueError:
         pass
-
     context['suggested_profiles'] = suggested_profiles
 
 
     total_emissions = 0
+    for i in recent_meals:
+        total_emissions += i.diet.carbon_price_per_meal
+
+    most_common_transport = {}
     for i in journeys:
         duration = i.duration_hours * 60 + i.duration_minutes
         total_emissions += duration * i.transportation.carbon_price
 
-    for i in recent_meals:
-        total_emissions += i.diet.carbon_price_per_meal
-    
+        if i.transportation.name not in most_common_transport:
+            most_common_transport[i.transportation.name] = 1
+        else:
+            most_common_transport[i.transportation.name] += 1
+    try:
+        most_common_transport = max(most_common_transport.items(), key=operator.itemgetter(1))[0]
+    except ValueError:
+        most_common_transport = None
+        pass
+
     context['total_emissions'] = round(total_emissions, 2)
-    
+    context['most_common_transport'] = str(most_common_transport)
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url='login')

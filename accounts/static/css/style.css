@@ -1086,6 +1086,11 @@ label.valid:after {
     }
 }
 
+.dot img{
+    width: 70%;
+    height: 70%;
+    transform: translate(5px, 5px);
+}
 
 @media (max-width: 1295px){
     .split-container {
@@ -1099,10 +1104,6 @@ label.valid:after {
         overflow-x: auto; 
         padding: 20px }
 }
-
-
-
-
 
 @media (max-width: 753px){
     .gauge .title{
