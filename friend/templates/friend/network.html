@@ -16,11 +16,11 @@
 
                     <li class="wide-profile-card">
                             <div class="wide-profile-pic image-container">
-                                <img src="{{request.sender.customer.profile_pic.url}}" />
+                                <a href="{% url 'accounts:user_page' pk=request.sender.id %}"><img src="{{request.sender.customer.profile_pic.url}}" /></a>
                             </div>
                             <div class="profile-details">
                                 <div class="profile-name">
-                                    {{request.sender.customer.first_name}} {{request.sender.customer.last_name}}
+                                    <a href="{% url 'accounts:user_page' pk=request.sender.id %}">{{request.sender.customer.first_name}} {{request.sender.customer.last_name}}</a>
                                 </div>
                                 <div class="profile-title">
                                     {{request.sender.customer.title}}
