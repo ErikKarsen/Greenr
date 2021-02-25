@@ -96,7 +96,7 @@ header{
 .nav-btn{
     display: flex;
     align-items: baseline;
-    width: 30%
+    width: 35%
 }
 
 .nav-link{
@@ -1095,6 +1095,10 @@ label.valid:after {
         overflow-x: auto; 
         padding: 20px }
 }
+
+
+
+
 
 @media (max-width: 753px){
     .gauge .title{
