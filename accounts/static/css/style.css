@@ -317,7 +317,7 @@ h2 {
 
 .main {
     background: #f8f8f8;
-    padding: 150px 0; 
+    padding: 60px 0; 
 }
   
 body {
@@ -537,7 +537,9 @@ label.valid:after {
 }
 
 .table-container {
-    width: 45%;
+    width: 98%;
+    overflow-x: auto;
+    margin-top: 40px;
     background: #fff;
     margin: 0 auto;
     box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
@@ -1108,19 +1110,6 @@ label.valid:after {
 
 .error-container .btn{
     margin: 40px;
-}
-
-@media (max-width: 1295px){
-    .split-container {
-        flex-direction: column;
-    }
-
-    .table-container {
-        width: 100%;
-        border-radius: 20px;
-        align-items: center;
-        overflow-x: auto; 
-        padding: 20px }
 }
 
 @media (max-width: 753px){
