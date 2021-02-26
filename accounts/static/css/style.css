@@ -1139,3 +1139,9 @@ label.valid:after {
         flex: 100%
     }
 }
+
+@media (max-width: 430px){
+    #add-journey-btn{
+        margin: 10px 20px 70px auto;
+    }
+}
