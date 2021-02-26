@@ -547,8 +547,17 @@ label.valid:after {
     margin-top: 30px;
 }
 
+.table-header{
+    display: flex;
+}
+
 .table-title {
     padding-left: 20px;
+}
+
+.table-header a{
+    margin: 10px 20px 15px auto;
+    font-size: 16px;
 }
 
 .primary-button {

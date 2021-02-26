@@ -6,7 +6,10 @@
 
 {% include 'accounts/data_tiles.html' %}
 <div class="table-container">
-    <h2 class="table-title">Recent Journeys</h2>
+    <div class="table-header">
+        <h2 class="table-title">Recent Journeys</h2>
+        <a href="{% url 'accounts:create_journey' %}" class="btn solid">+</a>
+    </div>
     <table class="content-table">
         <thead>
             <tr>
@@ -38,7 +41,10 @@
 </div>
 
 <div class="table-container">
-    <h2 class="table-title">Recent Meals</h2>
+    <div class="table-header">
+        <h2 class="table-title">Recent Meals</h2>
+        <a href="{% url 'accounts:create_meal' %}" class="btn solid">+</a>
+    </div>
     <table class="content-table">
         <thead>
             <tr>
