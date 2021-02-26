@@ -495,6 +495,7 @@ label.valid:after {
 
 .tile-container{
     display: flex;
+    flex-wrap: wrap;
 }
 
 .tile{
@@ -1085,10 +1086,6 @@ label.valid:after {
         flex-direction: column;
     }
 
-    .tile1{
-        height: 400px;
-    }
-
     .middle-container{
         height: 100%;
     }
@@ -1125,5 +1122,11 @@ label.valid:after {
     
     .gauge .description{
         transform: translate(0px, -110px);
+    }
+}
+
+@media (max-width: 1245px){
+    .tile1 {
+        flex: 100%
     }
 }
