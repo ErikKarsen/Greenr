@@ -83,10 +83,10 @@ def logoutUser(request):
 @login_required(login_url='login')
 def home(request):
     context = {}
-    journeys = request.user.customer.journey_set.all()
+    journeys = request.user.customer.journey_set.all().order_by('-date_created')
     context['journeys'] = journeys
 
-    recent_meals = request.user.customer.meal_set.all()
+    recent_meals = request.user.customer.meal_set.all().order_by('-date_created')
     context['recent_meals'] = recent_meals
 
     user = request.user

@@ -10,8 +10,16 @@
             <header>
                 <h4>Friend Requests:</h4>
             </header>
+
             <div class="container-wide-profile">
                 <ul>
+                    {% if not friend_requests %}
+                    <li class="wide-profile-card">
+                        <p>No pending requests</p>
+                    </li>
+                    {% endif %}
+
+
                     {% for request in friend_requests %}
 
                     <li class="wide-profile-card">
@@ -44,6 +52,12 @@
             </header>
             <div class="container-wide-profile">
                 <ul>
+                    {% if not friends_list %}
+                    <li class="wide-profile-card">
+                        <p>No friends yet!</p>
+                    </li>
+                    {% endif %}
+
                     {% for profile in friends_list %}
                         <li class="wide-profile-card">
                             <div class="wide-profile-pic image-container">
