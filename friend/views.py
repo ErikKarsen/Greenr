@@ -42,8 +42,6 @@ def send_friend_request(request, pk):
 	else:
 		payload['response'] = "You must be authenticated to send a friend request."
 
-	print(payload['response'])
-
 	return redirect('accounts:user_page', pk=pk)
 
 @login_required(login_url='login')
@@ -60,9 +58,6 @@ def accept_friend_request(request, pk):
 	if friend_request:
 		# found the request. Now accept it
 		friend_request.accept()
-		payload['response'] = "Friend request accepted."
-	else:
-		payload['response'] = "Something went wrong."
 
 	return redirect('accounts:user_page', pk=pk)
 
@@ -80,9 +75,6 @@ def decline_friend_request(request, pk):
 	if friend_request:
 		# found the request. Now decline it
 		friend_request.decline()
-		payload['response'] = "Friend request declined."
-	else:
-		payload['response'] = "Something went wrong."
 	
 	return redirect('accounts:user_page', pk=pk)
 
@@ -93,18 +85,13 @@ def cancel_friend_request(request, pk):
 	payload = {}
 
 	try:
-		# friend_request = FriendRequest.objects.get(sender=sender, receiver=receiver)
 		friend_request = FriendRequest.objects.filter(sender=sender, receiver=receiver).order_by('-id')[0]
 	except FriendRequest.DoesNotExist:
 		payload['response'] = "Friend request does not exist."
 
-
 	if friend_request:
 		# found the request. Now cancel it
 		friend_request.cancel()
-		payload['response'] = "Friend request canceled."
-	else:
-		payload['response'] = "Something went wrong."
 
 	return redirect('accounts:user_page', pk=pk)
 

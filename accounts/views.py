@@ -229,11 +229,14 @@ def updateJourney(request, pk):
     journey = Journey.objects.get(id=pk)
     form = JourneyForm(instance=journey)
 
-    if request.method == 'POST':
-        form = JourneyForm(request.POST, instance=journey)
-        if form.is_valid():
-            form.save()
-            return redirect('accounts:home')
+    if request.user.customer == journey.customer:
+        if request.method == 'POST':
+            form = JourneyForm(request.POST, instance=journey)
+            if form.is_valid():
+                form.save()
+                return redirect('accounts:home')
+    else:
+        raise Exception("That Journey isn't yours to update.")
 
     context = {'form': form}
     return render(request, 'accounts/journey_form.html', context)
@@ -242,16 +245,12 @@ def updateJourney(request, pk):
 def deleteJourney(request, pk):
     journey = Journey.objects.get(id=pk)
 
-    journey.delete()
+    if request.user.customer == journey.customer:
+        journey.delete()
+    else:
+        raise Exception("That Journey isn't yours to delete.")
+    
     return redirect('accounts:home')
-
-
-    # if request.method == 'POST':
-    #     journey.delete()
-    #     return redirect('accounts:home')
-        
-    # context = {'item': journey}
-    # return render(request, 'accounts/delete.html', context)
 
 @login_required(login_url='login')
 def createMeal(request):
@@ -272,11 +271,14 @@ def updateMeal(request, pk):
     meal = Meal.objects.get(id=pk)
     form = MealForm(instance=meal)
 
-    if request.method == 'POST':
-        form = MealForm(request.POST, instance=meal)
-        if form.is_valid():
-            form.save()
-            return redirect('accounts:home')
+    if request.user.customer == meal.customer:
+        if request.method == 'POST':
+            form = MealForm(request.POST, instance=meal)
+            if form.is_valid():
+                form.save()
+                return redirect('accounts:home')
+    else:
+        raise Exception("That Meal isn't yours to update.")
 
     context = {'form': form}
     return render(request, 'accounts/meal_form.html', context)
@@ -285,5 +287,9 @@ def updateMeal(request, pk):
 def deleteMeal(request, pk):
     meal = Meal.objects.get(id=pk)
 
-    meal.delete()
+    if request.user.customer == meal.customer:
+            meal.delete()
+    else:
+        raise Exception("That Meal isn't yours to delete.")
+
     return redirect('accounts:home')
