@@ -146,8 +146,13 @@ def home(request):
     # Use numpy to make cumulative array of emissions, round to 1 decimal place
     cumulative_daily_emissions = np.cumsum(list(daily_emissions.values()))
     rounded_cumulative_daily_emissions = np.around(cumulative_daily_emissions, 1)
+    actual_emissions = list(rounded_cumulative_daily_emissions)
+    context['actual_emissions'] = actual_emissions
 
-    context['actual_emissions'] = list(rounded_cumulative_daily_emissions)
+    # Set colors for line graph
+    chart_colors = ['rgb(0, 99, 132)' if x < 1000 else 'rgb(255, 15, 15)' for x in actual_emissions]
+    context['chart_colors'] = chart_colors
+
     context['total_emissions'] = round(total_emissions, 2)
     context['most_common_transport'] = str(most_common_transport)
     return render(request, 'accounts/dashboard.html', context)
