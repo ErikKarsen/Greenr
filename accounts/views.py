@@ -142,6 +142,9 @@ def home(request):
     except ValueError:
         most_common_transport = None
         pass
+
+    context['total_emissions'] = round(total_emissions, 2)
+    context['most_common_transport'] = str(most_common_transport)
     
     # Use numpy to make cumulative array of emissions, round to 1 decimal place
     cumulative_daily_emissions = np.cumsum(list(daily_emissions.values()))
@@ -150,11 +153,14 @@ def home(request):
     context['actual_emissions'] = actual_emissions
 
     # Set colors for line graph
-    chart_colors = ['rgb(0, 99, 132)' if x < 1000 else 'rgb(255, 15, 15)' for x in actual_emissions]
-    context['chart_colors'] = chart_colors
+    chart_colors = []
+    for i in range(min(len(estimated_emissions), len(actual_emissions))):
+        if estimated_emissions[i] <= actual_emissions[i] and estimated_emissions[i] != 0:
+            chart_colors.append('rgb(255, 15, 15)')
+        else:
+            chart_colors.append('rgb(0, 99, 132)')
 
-    context['total_emissions'] = round(total_emissions, 2)
-    context['most_common_transport'] = str(most_common_transport)
+    context['chart_colors'] = chart_colors
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url='login')
