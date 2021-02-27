@@ -92,13 +92,27 @@
 	var ctx = document.getElementById('myChart').getContext('2d');
 	var myChart = new Chart(ctx, {
     type: 'line',
+	plugins: [{
+		afterLayout: chart => {
+		var ctx = chart.chart.ctx;
+		var xAxis = chart.scales['x-axis-0'];
+		var gradientStroke = ctx.createLinearGradient(xAxis.left, 0, xAxis.right, 0);
+		var dataset = chart.data.datasets[0];
+		dataset.colors.forEach((c, i) => {
+			var stop = 1 / (dataset.colors.length - 1) * i;
+			gradientStroke.addColorStop(stop, dataset.colors[i]);
+		});
+		dataset.borderColor = gradientStroke;
+		}
+	}],
     data: {
         labels: {{labels|safe}},
         datasets: [{
             label: 'Actual Emissions',
-			backgroundColor: 'rgba(0, 99, 132, 0.2)',
 			borderColor: 'rgb(0, 99, 132)',
+			colors: {{chart_colors|safe}},
 			data: {{actual_emissions|safe}},
+			fill: false,
         },
 		{
             label: 'Estimated Emissions',
