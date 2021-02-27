@@ -68,43 +68,58 @@
 
 		</div>
 		
-		<div class="tile profiles-tile">
-            <header>
-                <h4>Suggested For You</h4>
-            </header>
-            <div class="container-suggested-profile">
-                <ul>
-                    {% for profile in suggested_profiles %}
-                        <li class="mini-profile-card">
-                            <div class="mini-profile-pic image-container">
-                                <a href="{% url 'accounts:user_page' pk=profile.user.id %}"><img src="{{profile.profile_pic.url}}" /></a>
-                            </div>
-                            <div class="mini-profile-details">
-                                <div class="profile-name">
-                                    <a href="{% url 'accounts:user_page' pk=profile.user.id %}">{{profile.first_name}} {{profile.last_name}}</a>
-                                </div>
-                                <div class="profile-title">
-                                    {{profile.title}}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+		<div class="tile chart-tile">
+			<canvas id="myChart"></canvas>
         </div>
 </div>
 
 <script>
-		let options = {
-			startAngle: -1.55,
-			size: 150,
-			fill: {gradient: ['#ff0f0f', '#008000', '#008000']}
+	// Gauge
+	let options = {
+		startAngle: -1.55,
+		size: 150,
+		fill: {gradient: ['#ff0f0f', '#008000', '#008000']}
+	}
+	$(".circle .bar").circleProgress(options).on('circle-animation-progress',
+	function(event, progress, stepValue){
+		$(this).parent().find("span").text(String(stepValue.toFixed(3)*1000) + "kg");
+	});
+	$(".emissions .bar").circleProgress({
+		value: {{total_emissions}}/1000
+	});
+
+	// Emissions Graph
+	var ctx = document.getElementById('myChart').getContext('2d');
+	var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{labels|safe}},
+        datasets: [{
+            label: 'Actual Emissions',
+			backgroundColor: 'rgba(0, 99, 132, 0.2)',
+			borderColor: 'rgb(0, 99, 132)',
+			data: {{actual_emissions|safe}},
+        },
+		{
+            label: 'Estimated Emissions',
+			backgroundColor: 'rgba(180, 227, 164, 0.2)',
+			borderColor: 'rgb(0, 128, 0)',
+			data: {{estimated_emissions|safe}},
+        }]
+    },
+    options: {
+		responsive: true,
+		maintainAspectRatio: false,
+		title: {
+			display: true,
+			text: 'Actual vs. Estimated Emissions this Month'
 		}
-		$(".circle .bar").circleProgress(options).on('circle-animation-progress',
-		function(event, progress, stepValue){
-			$(this).parent().find("span").text(String(stepValue.toFixed(3)*1000) + "kg");
-		});
-		$(".emissions .bar").circleProgress({
-			value: {{total_emissions}}/1000
-		});
+    }
+	});
+
 </script>
+
+
+
+
+
