@@ -1099,6 +1099,10 @@ label.valid:after {
         flex-direction: column;
     }
 
+    .chart-tile{
+        width: 98%;
+    }
+
     .middle-container{
         height: 100%;
     }
@@ -1153,7 +1157,7 @@ label.valid:after {
 @media print {
     canvas.myChart {
         min-height: 100%;
-        max-width: 100%;
+        max-width: 100%;h
         max-height: 100%;
         height: auto!important;
         width: auto!important;
