@@ -92,9 +92,10 @@ def home(request):
 
     # Get num days in current month
     days_current_month = calendar.monthrange(now.year, now.month)[1]
+    current_month = now.strftime("%b")
 
     # Create graph labels list
-    labels = list(range(1, days_current_month + 1))
+    labels = [str(i) + ' ' + current_month for i in range(1, days_current_month + 1)]
     context['labels'] = labels
 
     # Estimated emissions based on user baseline
@@ -121,7 +122,7 @@ def home(request):
     total_emissions = 0
     for i in recent_meals:
         total_emissions += i.diet.carbon_price_per_meal
-        daily_emissions[i.date_created.day] += i.diet.carbon_price_per_meal
+        daily_emissions[str(i.date_created.day) + ' ' + str(i.date_created.strftime("%b"))] += i.diet.carbon_price_per_meal
 
     # Create dictionary of transportations/occurences
     most_common_transport = {}
@@ -129,7 +130,7 @@ def home(request):
         duration = i.duration_hours * 60 + i.duration_minutes
         journey_emissions = duration * i.transportation.carbon_price
         total_emissions += journey_emissions
-        daily_emissions[i.date_created.day] += journey_emissions
+        daily_emissions[str(i.date_created.day) + ' ' + str(i.date_created.strftime("%b"))] += journey_emissions
 
         # Count occurences of transportations
         if i.transportation.name not in most_common_transport:
