@@ -1101,6 +1101,11 @@ label.valid:after {
 
     .chart-tile{
         width: 98%;
+        height: 350px;
+    }
+
+    #myChart{
+        height: 100%;
     }
 
     .middle-container{
