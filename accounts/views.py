@@ -5,6 +5,9 @@ from django.contrib import messages
 import random
 import operator
 
+import calendar
+import datetime 
+import numpy as np
 
 
 from .forms import *
@@ -83,55 +86,52 @@ def logoutUser(request):
 @login_required(login_url='login')
 def home(request):
     context = {}
-    journeys = request.user.customer.journey_set.all().order_by('-date_created')
+
+    # Current datetime
+    now = datetime.datetime.now()
+
+    # Get num days in current month
+    days_current_month = calendar.monthrange(now.year, now.month)[1]
+
+    # Create graph labels list
+    labels = list(range(1, days_current_month + 1))
+    context['labels'] = labels
+
+    # Estimated emissions based on user baseline
+    estimated_daily = np.arange(0, 1000, 1000/days_current_month).tolist() 
+    array_estimated_emissions = np.array(estimated_daily)
+    rounded_estimated_emissions = np.around(array_estimated_emissions, 1)
+    estimated_emissions = list(rounded_estimated_emissions)
+    context['estimated_emissions'] = estimated_emissions
+
+    # Get users journeys within current month, descending order
+    journeys = request.user.customer.journey_set.all().filter(date_created__month=now.month).order_by('-date_created')
     context['journeys'] = journeys
 
+    # Get users meals within current month, descending order
     recent_meals = request.user.customer.meal_set.all().order_by('-date_created')
     context['recent_meals'] = recent_meals
 
-    user = request.user
+    # Create dictionary of day/emissions
+    daily_emissions = {}
+    for day in labels:
+        daily_emissions[day] = 0
 
-
-    try:
-        friend_list = FriendList.objects.get(user=user)
-    except FriendList.DoesNotExist:
-        friend_list = FriendList(user=user)
-        friend_list.save()
-
-    friends_list = friend_list.friends.all()
-
-    profiles = Customer.objects.exclude(id=user.id)
-
-    profiles_list = list(profiles)
-
-
-    suggested_profiles = []
-    try:
-        while profiles_list:
-            random_profiles = random.sample(profiles_list, 3)
-            for profile in random_profiles:
-                if profile not in suggested_profiles:
-                    if profile not in friends_list:
-                        profiles_list.remove(profile)
-                        suggested_profiles.append(profile)
-                
-            if len(suggested_profiles) >= 3:
-                break
-
-    except ValueError:
-        pass
-    context['suggested_profiles'] = suggested_profiles
-
-
+    # Sum total_emissions and add emissions per day to dictionary
     total_emissions = 0
     for i in recent_meals:
         total_emissions += i.diet.carbon_price_per_meal
+        daily_emissions[i.date_created.day] += i.diet.carbon_price_per_meal
 
+    # Create dictionary of transportations/occurences
     most_common_transport = {}
     for i in journeys:
         duration = i.duration_hours * 60 + i.duration_minutes
-        total_emissions += duration * i.transportation.carbon_price
+        journey_emissions = duration * i.transportation.carbon_price
+        total_emissions += journey_emissions
+        daily_emissions[i.date_created.day] += journey_emissions
 
+        # Count occurences of transportations
         if i.transportation.name not in most_common_transport:
             most_common_transport[i.transportation.name] = 1
         else:
@@ -141,7 +141,12 @@ def home(request):
     except ValueError:
         most_common_transport = None
         pass
+    
+    # Use numpy to make cumulative array of emissions, round to 1 decimal place
+    cumulative_daily_emissions = np.cumsum(list(daily_emissions.values()))
+    rounded_cumulative_daily_emissions = np.around(cumulative_daily_emissions, 1)
 
+    context['actual_emissions'] = list(rounded_cumulative_daily_emissions)
     context['total_emissions'] = round(total_emissions, 2)
     context['most_common_transport'] = str(most_common_transport)
     return render(request, 'accounts/dashboard.html', context)

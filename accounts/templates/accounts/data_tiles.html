@@ -69,35 +69,12 @@
 		</div>
 		
 		<div class="tile chart-tile">
-
 			<canvas id="myChart"></canvas>
-
-            <!-- <header>
-                <h4>Suggested For You</h4>
-            </header>
-            <div class="container-suggested-profile">
-                <ul>
-                    {% for profile in suggested_profiles %}
-                        <li class="mini-profile-card">
-                            <div class="mini-profile-pic image-container">
-                                <a href="{% url 'accounts:user_page' pk=profile.user.id %}"><img src="{{profile.profile_pic.url}}" /></a>
-                            </div>
-                            <div class="mini-profile-details">
-                                <div class="profile-name">
-                                    <a href="{% url 'accounts:user_page' pk=profile.user.id %}">{{profile.first_name}} {{profile.last_name}}</a>
-                                </div>
-                                <div class="profile-title">
-                                    {{profile.title}}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div> -->
         </div>
 </div>
 
 <script>
+	// Gauge
 	let options = {
 		startAngle: -1.55,
 		size: 150,
@@ -111,60 +88,34 @@
 		value: {{total_emissions}}/1000
 	});
 
-
-
-function beforePrintHandler () {
-    for (var id in Chart.instances) {
-        Chart.instances[id].resize();
-    }
-}
-
+	// Emissions Graph
 	var ctx = document.getElementById('myChart').getContext('2d');
 	var myChart = new Chart(ctx, {
-    type: 'bar',
-
+    type: 'line',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: {{labels|safe}},
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
+            label: 'Actual Emissions',
+			backgroundColor: 'rgba(0, 99, 132, 0.2)',
+			borderColor: 'rgb(0, 99, 132)',
+			data: {{actual_emissions|safe}},
+        },
+		{
+            label: 'Estimated Emissions',
+			backgroundColor: 'rgba(180, 227, 164, 0.2)',
+			borderColor: 'rgb(0, 128, 0)',
+			data: {{estimated_emissions|safe}},
         }]
     },
     options: {
 		responsive: true,
 		maintainAspectRatio: false,
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        },
 		title: {
 			display: true,
-			text: 'Chart.js Bar Chart'
+			text: 'Estimated vs. Actual Emissions this Month'
 		}
     }
 	});
-
-
 
 </script>
 
