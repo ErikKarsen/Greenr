@@ -110,7 +110,7 @@ def home(request):
     context['journeys'] = journeys
 
     # Get users meals within current month, descending order
-    recent_meals = request.user.customer.meal_set.all().order_by('-date_created')
+    recent_meals = request.user.customer.meal_set.all().filter(date_created__month=now.month).order_by('-date_created')
     context['recent_meals'] = recent_meals
 
     # Create dictionary of day/emissions
