@@ -99,8 +99,9 @@ def home(request):
     context['labels'] = labels
 
     # Estimated emissions based on user baseline
-    estimated_daily = np.arange(0, 1000, 1000/days_current_month).tolist() 
-    array_estimated_emissions = np.array(estimated_daily)
+    estimated_daily = 1000/days_current_month
+    estimated_daily_list = np.arange(estimated_daily, 1000+estimated_daily, estimated_daily).tolist() 
+    array_estimated_emissions = np.array(estimated_daily_list)
     rounded_estimated_emissions = np.around(array_estimated_emissions, 1)
     estimated_emissions = list(rounded_estimated_emissions)
     context['estimated_emissions'] = estimated_emissions
