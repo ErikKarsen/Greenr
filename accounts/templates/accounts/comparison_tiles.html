@@ -4,20 +4,6 @@
 
 
 <div class="tile-container">
-		<div class="tile tile1">
-				<div class="upper-container mini-upper-container">
-						<div class="image-container mini-image-container">
-								<a href="{% url 'accounts:user_page' pk=user.id %}"><img src="{{user.customer.profile_pic.url}}"/></a>
-						</div>
-						<a href="{% url 'accounts:user_page' pk=user.id %}"><h3>{{user.customer.first_name}} {{user.customer.last_name}}</h3></a>
-				</div>
-				<div class="middle-container  mini-middle-container">
-						<div>
-								<h4>{{user.customer.title}}</h4>
-								<p>Greater London Area</p>
-						</div>
-				</div>
-		</div>
 		<div class="tile gauge">
 			<div class="card emissions">
 				<div class="circle">
@@ -30,38 +16,38 @@
 
 			<div class="gauge-stats">
 				<div class="stat-container">
-					{% if most_common_transport == "Walk" %}
+					{% if account_most_common_transport == "Walk" %}
 						<span class="dot"><img src="{% static 'images/icons/walk.png' %}"></span>	
-					{% elif most_common_transport == "Run" %}
+					{% elif account_most_common_transport == "Run" %}
 						<span class="dot"><img src="{% static 'images/icons/running.png' %}"></span>	
-					{% elif most_common_transport == "Bicycle" %}
+					{% elif account_most_common_transport == "Bicycle" %}
 						<span class="dot"><img src="{% static 'images/icons/bicycle.png' %}"></span>
-					{% elif most_common_transport == "Train" %}
+					{% elif account_most_common_transport == "Train" %}
 						<span class="dot"><img src="{% static 'images/icons/train.png' %}"></span>	
-					{% elif most_common_transport == "Bus" %}
+					{% elif account_most_common_transport == "Bus" %}
 						<span class="dot"><img src="{% static 'images/icons/bus.png' %}"></span>	
-					{% elif most_common_transport == "Motorbike" %}
+					{% elif account_most_common_transport == "Motorbike" %}
 						<span class="dot"><img src="{% static 'images/icons/motorbike.png' %}"></span>
-					{% elif most_common_transport == "Carpool" %}
+					{% elif account_most_common_transport == "Carpool" %}
 						<span class="dot"><img src="{% static 'images/icons/carpool.png' %}"></span>	
-					{% elif most_common_transport == "Car" %}
+					{% elif account_most_common_transport == "Car" %}
 						<span class="dot"><img src="{% static 'images/icons/car.png' %}"></span>	
-					{% elif most_common_transport == "Plane" %}
+					{% elif account_most_common_transport == "Plane" %}
 						<span class="dot"><img src="{% static 'images/icons/plane.png' %}"></span>	
 					{% else %}
 						<span class="dot"></span>	
 					{% endif %}
 					<div class="stat-text">
-						<div class="stat">{{most_common_transport}}</div>
-						<div class="stat-description">Most used transport</div>
+						<div class="stat">{{account_most_common_transport}}</div>
+						<div class="stat-description">Their most used transport</div>
 					</div>
 				</div>
 
 				<div class="stat-container">
-					<span class="dot"><div class="stat">{{goal_percentage}}%</div></span>
+					<span class="dot"><div class="stat">{{account_goal_percentage}}%</div></span>
 					<div class="stat-text">
 					<div class="stat">1000 kg</div>
-					<div class="stat-description">Emissions target</div>
+					<div class="stat-description">Their Emissions target</div>
 					</div>
 				</div>
 			</div>
@@ -85,7 +71,7 @@
 		$(this).parent().find("span").text(String(stepValue.toFixed(3)*1000) + "kg");
 	});
 	$(".emissions .bar").circleProgress({
-		value: {{total_emissions}}/1000
+		value: {{account_total_emissions}}/1000
 	});
 
 	// Emissions Graph
@@ -108,17 +94,17 @@
     data: {
         labels: {{labels|safe}},
         datasets: [{
-            label: 'Actual Emissions',
+            label: 'Their Emissions',
 			borderColor: 'rgb(0, 99, 132)',
 			colors: {{chart_colors|safe}},
-			data: {{actual_emissions|safe}},
+			data: {{account_actual_emissions|safe}},
 			fill: false,
         },
 		{
-            label: 'Estimated Emissions',
+            label: 'Your Emissions',
 			backgroundColor: 'rgba(180, 227, 164, 0.2)',
 			borderColor: 'rgb(0, 128, 0)',
-			data: {{estimated_emissions|safe}},
+			data: {{actual_emissions|safe}},
         }]
     },
     options: {
@@ -126,7 +112,7 @@
 		maintainAspectRatio: false,
 		title: {
 			display: true,
-			text: 'Actual vs. Estimated Emissions this Month'
+			text: 'Their vs. Your Emissions this Month'
 		}
     }
 	});

@@ -83,8 +83,8 @@ def logoutUser(request):
     logout(request)
     return redirect('accounts:login')
 
-@login_required(login_url='login')
-def home(request):
+
+def tiles(request, account=None):
     context = {}
 
     # Current datetime
@@ -162,7 +162,84 @@ def home(request):
             chart_colors.append('rgb(0, 99, 132)')
 
     context['chart_colors'] = chart_colors
+
+    goal_percentage = round((total_emissions / 1000) *100, 1)
+    if goal_percentage > 10:
+        goal_percentage = round(goal_percentage)
+
+    context['goal_percentage'] = goal_percentage
+
+    if account:
+        # Get users journeys within current month, descending order
+        journeys = account.customer.journey_set.all().filter(date_created__month=now.month).order_by('-date_created')
+        context['account_journeys'] = journeys
+
+        # Get users meals within current month, descending order
+        recent_meals = account.customer.meal_set.all().filter(date_created__month=now.month).order_by('-date_created')
+        context['account_recent_meals'] = recent_meals
+
+        # Create dictionary of day/emissions
+        daily_emissions = {}
+        for day in labels:
+            daily_emissions[day] = 0
+
+        # Sum total_emissions and add emissions per day to dictionary
+        total_emissions = 0
+        for i in recent_meals:
+            total_emissions += i.diet.carbon_price_per_meal
+            daily_emissions[str(i.date_created.day) + ' ' + str(i.date_created.strftime("%b"))] += i.diet.carbon_price_per_meal
+
+        # Create dictionary of transportations/occurences
+        most_common_transport = {}
+        for i in journeys:
+            duration = i.duration_hours * 60 + i.duration_minutes
+            journey_emissions = duration * i.transportation.carbon_price
+            total_emissions += journey_emissions
+            daily_emissions[str(i.date_created.day) + ' ' + str(i.date_created.strftime("%b"))] += journey_emissions
+
+            # Count occurences of transportations
+            if i.transportation.name not in most_common_transport:
+                most_common_transport[i.transportation.name] = 1
+            else:
+                most_common_transport[i.transportation.name] += 1
+        try:
+            most_common_transport = max(most_common_transport.items(), key=operator.itemgetter(1))[0]
+        except ValueError:
+            most_common_transport = None
+            pass
+
+        context['account_total_emissions'] = round(total_emissions, 2)
+        context['account_most_common_transport'] = str(most_common_transport)
+
+        # Use numpy to make cumulative array of emissions, round to 1 decimal place
+        cumulative_daily_emissions = np.cumsum(list(daily_emissions.values()))
+        rounded_cumulative_daily_emissions = np.around(cumulative_daily_emissions, 1)
+        actual_emissions = list(rounded_cumulative_daily_emissions)
+        context['account_actual_emissions'] = actual_emissions
+
+        # Set colors for line graph
+        chart_colors = []
+        for i in range(min(len(estimated_emissions), len(actual_emissions))):
+            if estimated_emissions[i] <= actual_emissions[i] and estimated_emissions[i] != 0:
+                chart_colors.append('rgb(255, 15, 15)')
+            else:
+                chart_colors.append('rgb(0, 99, 132)')
+
+        context['account_chart_colors'] = chart_colors
+
+        goal_percentage = round((total_emissions / 1000) *100, 1)
+        if goal_percentage > 10:
+            goal_percentage = round(goal_percentage)
+
+        context['account_goal_percentage'] = goal_percentage
+
+    return context
+
+@login_required(login_url='login')
+def home(request):
+    context = tiles(request)
     return render(request, 'accounts/dashboard.html', context)
+
 
 @login_required(login_url='login')
 def userPage(request, pk):
@@ -170,6 +247,7 @@ def userPage(request, pk):
     customer = Customer.objects.get(id=pk)
     context['customer'] = customer
     account = customer.user
+    context.update(tiles(request, account))
     try:
         friend_list = FriendList.objects.get(user=account)
     except FriendList.DoesNotExist:

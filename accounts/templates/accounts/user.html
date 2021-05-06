@@ -64,4 +64,8 @@
     </div>
 </div>
 
+{% if is_friend %}
+    {% include 'accounts/comparison_tiles.html' %}
+{% endif %}
+
 {% endblock content %}
