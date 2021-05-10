@@ -99,8 +99,8 @@ def tiles(request, account=None):
     context['labels'] = labels
 
     # Estimated emissions based on user baseline
-    estimated_daily = 1000/days_current_month
-    estimated_daily_list = np.arange(estimated_daily, 1000+estimated_daily, estimated_daily).tolist() 
+    estimated_daily = 820/days_current_month
+    estimated_daily_list = np.arange(estimated_daily, 820+estimated_daily, estimated_daily).tolist() 
     array_estimated_emissions = np.array(estimated_daily_list)
     rounded_estimated_emissions = np.around(array_estimated_emissions, 1)
     estimated_emissions = list(rounded_estimated_emissions)
@@ -163,7 +163,7 @@ def tiles(request, account=None):
 
     context['chart_colors'] = chart_colors
 
-    goal_percentage = round((total_emissions / 1000) *100, 1)
+    goal_percentage = round((total_emissions / 820) *100, 1)
     if goal_percentage > 10:
         goal_percentage = round(goal_percentage)
 
@@ -227,7 +227,7 @@ def tiles(request, account=None):
 
         context['account_chart_colors'] = account_chart_colors
 
-        goal_percentage = round((total_emissions / 1000) *100, 1)
+        goal_percentage = round((total_emissions / 820) *100, 1)
         if goal_percentage > 10:
             goal_percentage = round(goal_percentage)
 
