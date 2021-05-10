@@ -214,18 +214,18 @@ def tiles(request, account=None):
         # Use numpy to make cumulative array of emissions, round to 1 decimal place
         cumulative_daily_emissions = np.cumsum(list(daily_emissions.values()))
         rounded_cumulative_daily_emissions = np.around(cumulative_daily_emissions, 1)
-        actual_emissions = list(rounded_cumulative_daily_emissions)
-        context['account_actual_emissions'] = actual_emissions
+        account_actual_emissions = list(rounded_cumulative_daily_emissions)
+        context['account_actual_emissions'] = account_actual_emissions
 
         # Set colors for line graph
-        chart_colors = []
-        for i in range(min(len(estimated_emissions), len(actual_emissions))):
-            if estimated_emissions[i] <= actual_emissions[i] and estimated_emissions[i] != 0:
-                chart_colors.append('rgb(255, 15, 15)')
+        account_chart_colors = []
+        for i in range(min(len(estimated_emissions), len(account_actual_emissions))):
+            if actual_emissions[i] >= account_actual_emissions[i] and actual_emissions[i] != 0:
+                account_chart_colors.append('rgb(255, 15, 15)')
             else:
-                chart_colors.append('rgb(0, 99, 132)')
+                account_chart_colors.append('rgb(0, 99, 132)')
 
-        context['account_chart_colors'] = chart_colors
+        context['account_chart_colors'] = account_chart_colors
 
         goal_percentage = round((total_emissions / 1000) *100, 1)
         if goal_percentage > 10:

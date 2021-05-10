@@ -47,7 +47,7 @@
 					<span class="dot"><div class="stat">{{account_goal_percentage}}%</div></span>
 					<div class="stat-text">
 					<div class="stat">1000 kg</div>
-					<div class="stat-description">Their Emissions target</div>
+					<div class="stat-description">Their Emissions allowance</div>
 					</div>
 				</div>
 			</div>
@@ -94,17 +94,17 @@
     data: {
         labels: {{labels|safe}},
         datasets: [{
-            label: 'Their Emissions',
+            label: 'Your Emissions',
 			borderColor: 'rgb(0, 99, 132)',
-			colors: {{chart_colors|safe}},
-			data: {{account_actual_emissions|safe}},
+			colors: {{account_chart_colors|safe}},
+			data: {{actual_emissions|safe}},
 			fill: false,
         },
 		{
-            label: 'Your Emissions',
+            label: 'Their Emissions',
 			backgroundColor: 'rgba(180, 227, 164, 0.2)',
 			borderColor: 'rgb(0, 128, 0)',
-			data: {{actual_emissions|safe}},
+			data: {{account_actual_emissions|safe}},
         }]
     },
     options: {

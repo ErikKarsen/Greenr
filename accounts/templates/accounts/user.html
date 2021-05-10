@@ -56,10 +56,18 @@
             <div id="profile_description">
                 <p>{{customer.description}}</p>
             </div>
+
+            {%  if is_self or is_friend %}
             <div id="profile_events">
                 <h2>{{friends|length}}</h2>
                 <h4>Connections</h4>
             </div>
+            {% else %}
+            <div id="profile_events">
+                <h2 style="color:white">{{friends|length}}</h2>
+                <h4 style="color:white">Connections</h4>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
